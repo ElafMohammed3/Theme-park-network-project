@@ -1,0 +1,189 @@
+
+
+
+
+
+-------------------------------------------------
+			RouterISP
+Router>en
+Router#clock set 02:37:00 Jan 30 2026
+Router#conf terminal 
+Router(config)#hostname RouterISP
+RouterISP(config)#clock timezone Yemen 3
+RouterISP(config)#enable secret class
+RouterISP(config)#service password-encryption
+RouterISP(config)#line cons 0
+RouterISP(config-line)#password cons0
+RouterISP(config-line)#login
+RouterISP(config-line)#exit
+RouterISP(config)#exit
+RouterISP#copy running-config startup-config 
+Destination filename [startup-config]? 
+Building configuration...
+[OK]
+-------------------------------------------------
+			RouterAdmin
+Router>en
+Router#clock set 02:37:00 Jan 30 2026
+Router#conf t
+Router(config)#hostname RouterAdmin
+RouterAdmin(config)#clock timezone Yemen 3
+RouterAdmin(config)#enable secret pass1
+RouterAdmin(config)#service password-encryption
+RouterAdmin(config)#line cons 0
+RouterAdmin(config-line)#password cons1
+RouterAdmin(config-line)#login
+RouterAdmin(config-line)#exit
+RouterAdmin(config)#banner motd
+RouterAdmin(config)#exit
+RouterAdmin#copy running-config startup-config 
+Destination filename [startup-config]? 
+Building configuration...
+[OK]
+-------------------------------------------------
+		RouterGames
+Router>en
+Router#clock set 02:37:00 Jan 30 2026
+Router#conf t
+Router(config)#hostname RouterGames
+RouterGames(config)#clock timezone Yemen 3
+RouterGames(config)#enable secret pass2
+RouterGames(config)#service password-encryption
+RouterGames(config)#line cons 0
+RouterGames(config-line)#exit
+RouterGames(config)#line console 0
+RouterGames(config-line)#password cons1
+RouterGames(config-line)#login 
+RouterGames(config-line)#exit
+RouterGames(config)#exit
+RouterGames#copy running-config startup-config 
+Destination filename [startup-config]? 
+Building configuration...
+[OK]
+------------------------------------------------
+			SwitchAdmin
+Switch>en
+Switch#clock set 02:37:00 Jan 30 2026
+Switch#conf terminal 
+Switch(config)#clock timezone Yemen 3
+Switch(config)#hostname SwitchAdmin
+SwitchAdmin(config)#line console 0
+SwitchAdmin(config-line)#password cons4
+SwitchAdmin(config-line)#login
+SwitchAdmin(config-line)#exit
+SwitchAdmin(config)#enable secret pass4
+SwitchAdmin(config)#exit
+SwitchAdmin#copy running-config startup-config 
+Destination filename [startup-config]? 
+Building configuration...
+[OK]
+
+-------------------------------------------------
+			SwitchGames
+Switch>en
+Switch#clock set 02:37:00 Jan 30 2026
+Switch#configure terminal Switch(config)#hostname SwitchGames
+SwitchGames(config)#enable secret pass3
+SwitchGames(config)#service password-encryption
+SwitchGames(config)#line console 0
+SwitchGames(config-line)#password cons3
+SwitchGames(config-line)#login
+SwitchGames(config-line)#exit
+SwitchGames(config)#exit
+SwitchGames#copy running-config startup-config 
+Destination filename [startup-config]? 
+Building configuration...
+[OK]
+
+------------------------------------------------
+			R_no1
+Router>en
+Router#clock set 02:37:00 Jan 30 2026
+Router#conf t
+Router(config)#hostname R_no1
+R_no1(config)#clock timezone Yemen 3
+R_no1(config)#enable secret netwoek1
+R_no1(config)#service password-encryption
+R_no1(config)#line cons 0
+R_no1(config-line)#password net1
+R_no1(config-line)#login
+R_no1(config-line)#exit
+R_no1(config)#exit
+R_no1#copy running-config sta
+Destination filename [startup-config]? 
+Building configuration...
+[OK]
+
+-------------------------------------------------
+			R_no2
+Router>en
+Router#clock set 02:37:00 Jan 30 2026
+Router#conf t
+Router(config)#clock timezone Yemen 3
+Router(config)#hostname R_no2
+R_no2(config)#enable secret network2
+R_no2(config)#service password-encryption
+R_no2(config)#line cons 0
+R_no2(config-line)#password net2
+R_no2(config-line)#login
+R_no2(config-line)#exit
+R_no2(config)#exit
+copy runn sta
+Destination filename [startup-config]? 
+Building configuration...
+[OK]
+
+------------------------------------------------
+			S_no1
+Switch#en
+Switch#clock set 02:37:00 Jan 30 2026
+Switch#conf t
+Enter configuration commands, one per line.  End with CNTL/Z.
+Switch(config)#clock timezone Yemen 3
+Switch(config)#enable secret network1
+Switch(config)#service password-encryption
+Switch(config)#line cons 0
+Switch(config-line)#pass net1
+Switch(config-line)#login
+Switch(config-line)#exit
+Switch(config)#exit
+Switch#
+%SYS-5-CONFIG_I: Configured from console by console
+copy runn sta
+Destination filename [startup-config]? 
+Building configuration...
+[OK]
+Switch#conf t
+Enter configuration commands, one per line.  End with CNTL/Z.
+Switch(config)#host
+Switch(config)#hostname S_no1
+S_no1(config)#exit
+S_no1#
+%SYS-5-CONFIG_I: Configured from console by console
+copy runn sta
+Destination filename [startup-config]? 
+Building configuration...
+[OK]
+------------------------------------------------		
+			S_no2
+Switch>en
+Switch#clock set 02:37:00 Jan 30 2026
+Switch#conf t
+Enter configuration commands, one per line.  End with CNTL/Z.
+Switch(config)#hostn S_no2
+S_no2(config)#clock timezone Yemen 3
+S_no2(config)#enable secret network2
+S_no2(config)#service password-encryption
+S_no2(config)#line cons 0
+S_no2(config-line)#passw net2
+S_no2(config-line)#login
+S_no2(config-line)#exit
+S_no2(config)#exit
+S_no2#
+%SYS-5-CONFIG_I: Configured from console by console
+copy runn sta
+Destination filename [startup-config]? 
+Building configuration...
+[OK]
+
+------------------------------------------------
