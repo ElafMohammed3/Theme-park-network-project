@@ -1,4 +1,16 @@
+play area :
+4 PCs
+3 Printers
+router
+switch
 
+Office building :
+2 PCs
+laptop
+Printer
+Server
+router
+switch
 -------------------------------------------------
 			RouterISP
 Router>enable
@@ -50,7 +62,9 @@ RouterGames(config-line)#exit
 RouterGames(config)#line console 0
 RouterGames(config-line)#password cons1
 RouterGames(config-line)#login 
+RouterGames(config-line)#exec-timeout 5 0
 RouterGames(config-line)#exit
+RouterGames(config)#banner motd # welcome to Router Games#
 RouterGames(config)#exit
 RouterGames#copy running-config startup-config 
 Destination filename [startup-config]? 
@@ -85,6 +99,17 @@ SwitchGames(config)#line console 0
 SwitchGames(config-line)#password cons3
 SwitchGames(config-line)#login
 SwitchGames(config-line)#exit
+SwitchGames(config)#vlan 10
+SwitchGames(config-vlan)#name ticket
+SwitchGames(config-vlan)#vlan 20
+SwitchGames(config-vlan)#name control
+SwitchGames(config-vlan)#exit
+SwitchGames(config)#interface range fa0/2-7
+SwitchGames(config-if-range)#switchport mode access 
+SwitchGames(config-if-range)#switchport access vlan 10 
+SwitchGames(config-if-range)#interface range fa0/8-10
+SwitchGames(config-if-range)#switchport mode access 
+SwitchGames(config-if-range)#switchport access vlan 20
 SwitchGames(config)#exit
 SwitchGames#copy running-config startup-config 
 Destination filename [startup-config]? 
