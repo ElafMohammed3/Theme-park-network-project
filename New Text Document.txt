@@ -1,13 +1,9 @@
 
-
-
-
-
 -------------------------------------------------
 			RouterISP
-Router>en
+Router>enable
 Router#clock set 02:37:00 Jan 30 2026
-Router#conf terminal 
+Router#config terminal 
 Router(config)#hostname RouterISP
 RouterISP(config)#clock timezone Yemen 3
 RouterISP(config)#enable secret class
@@ -23,9 +19,9 @@ Building configuration...
 [OK]
 -------------------------------------------------
 			RouterAdmin
-Router>en
+Router>enable
 Router#clock set 02:37:00 Jan 30 2026
-Router#conf t
+Router#config terminal
 Router(config)#hostname RouterAdmin
 RouterAdmin(config)#clock timezone Yemen 3
 RouterAdmin(config)#enable secret pass1
@@ -42,9 +38,9 @@ Building configuration...
 [OK]
 -------------------------------------------------
 		RouterGames
-Router>en
+Router>enable
 Router#clock set 02:37:00 Jan 30 2026
-Router#conf t
+Router#config terminal
 Router(config)#hostname RouterGames
 RouterGames(config)#clock timezone Yemen 3
 RouterGames(config)#enable secret pass2
@@ -62,9 +58,9 @@ Building configuration...
 [OK]
 ------------------------------------------------
 			SwitchAdmin
-Switch>en
+Switch>enable
 Switch#clock set 02:37:00 Jan 30 2026
-Switch#conf terminal 
+Switch#config terminal 
 Switch(config)#clock timezone Yemen 3
 Switch(config)#hostname SwitchAdmin
 SwitchAdmin(config)#line console 0
@@ -80,7 +76,7 @@ Building configuration...
 
 -------------------------------------------------
 			SwitchGames
-Switch>en
+Switch>enable
 Switch#clock set 02:37:00 Jan 30 2026
 Switch#configure terminal Switch(config)#hostname SwitchGames
 SwitchGames(config)#enable secret pass3
@@ -97,28 +93,28 @@ Building configuration...
 
 ------------------------------------------------
 			R_no1
-Router>en
+Router>enable
 Router#clock set 02:37:00 Jan 30 2026
-Router#conf t
+Router#config terminal
 Router(config)#hostname R_no1
 R_no1(config)#clock timezone Yemen 3
-R_no1(config)#enable secret netwoek1
+R_no1(config)#enable secret network1
 R_no1(config)#service password-encryption
 R_no1(config)#line cons 0
 R_no1(config-line)#password net1
 R_no1(config-line)#login
 R_no1(config-line)#exit
 R_no1(config)#exit
-R_no1#copy running-config sta
+R_no1#copy running-config startup-config 
 Destination filename [startup-config]? 
 Building configuration...
 [OK]
 
 -------------------------------------------------
 			R_no2
-Router>en
+Router>enable
 Router#clock set 02:37:00 Jan 30 2026
-Router#conf t
+Router#config terminal
 Router(config)#clock timezone Yemen 3
 Router(config)#hostname R_no2
 R_no2(config)#enable secret network2
@@ -128,7 +124,7 @@ R_no2(config-line)#password net2
 R_no2(config-line)#login
 R_no2(config-line)#exit
 R_no2(config)#exit
-copy runn sta
+R_no2#copy running-config startup-config
 Destination filename [startup-config]? 
 Building configuration...
 [OK]
@@ -137,51 +133,51 @@ Building configuration...
 			S_no1
 Switch#en
 Switch#clock set 02:37:00 Jan 30 2026
-Switch#conf t
+Switch#config terminal
 Enter configuration commands, one per line.  End with CNTL/Z.
 Switch(config)#clock timezone Yemen 3
 Switch(config)#enable secret network1
 Switch(config)#service password-encryption
 Switch(config)#line cons 0
-Switch(config-line)#pass net1
+Switch(config-line)#password net1
 Switch(config-line)#login
 Switch(config-line)#exit
 Switch(config)#exit
 Switch#
 %SYS-5-CONFIG_I: Configured from console by console
-copy runn sta
+Switch#copy running-config startup-config
 Destination filename [startup-config]? 
 Building configuration...
 [OK]
-Switch#conf t
+Switch#config terminal
 Enter configuration commands, one per line.  End with CNTL/Z.
 Switch(config)#host
 Switch(config)#hostname S_no1
 S_no1(config)#exit
 S_no1#
 %SYS-5-CONFIG_I: Configured from console by console
-copy runn sta
+S_no1#copy running-config startup-config
 Destination filename [startup-config]? 
 Building configuration...
 [OK]
 ------------------------------------------------		
 			S_no2
-Switch>en
+Switch>enable
 Switch#clock set 02:37:00 Jan 30 2026
-Switch#conf t
+Switch#config terminal
 Enter configuration commands, one per line.  End with CNTL/Z.
-Switch(config)#hostn S_no2
+Switch(config)#hostname S_no2
 S_no2(config)#clock timezone Yemen 3
 S_no2(config)#enable secret network2
 S_no2(config)#service password-encryption
 S_no2(config)#line cons 0
-S_no2(config-line)#passw net2
+S_no2(config-line)#password net2
 S_no2(config-line)#login
 S_no2(config-line)#exit
 S_no2(config)#exit
 S_no2#
 %SYS-5-CONFIG_I: Configured from console by console
-copy runn sta
+S_no2#copy running-config startup-config
 Destination filename [startup-config]? 
 Building configuration...
 [OK]
