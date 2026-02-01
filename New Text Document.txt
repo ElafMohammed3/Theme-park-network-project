@@ -30,12 +30,20 @@ RouterAdmin(config)#line cons 0
 RouterAdmin(config-line)#password cons1
 RouterAdmin(config-line)#login
 RouterAdmin(config-line)#exit
+RouterAdmin(config)#line vty 0 4
+RouterAdmin(config-line)#pass
+RouterAdmin(config-line)#password vtyra1
+RouterAdmin(config-line)#login
+RouterAdmin(config-line)#exit
+RouterAdmin(config)#interface fastEthernet 0/1
+RouterAdmin(config-if)#description LAN_ADMIN
+RouterAdmin(config-if)#ip address 192.168.30.1 255.255.255.0
+RouterAdmin(config-if)#no shutdown 
+RouterAdmin(config-if)#exit
 RouterAdmin(config)#banner motd
 RouterAdmin(config)#exit
 RouterAdmin#copy running-config startup-config 
-Destination filename [startup-config]? 
-Building configuration...
-[OK]
+
 -------------------------------------------------
 		RouterGames
 Router>enable
@@ -45,17 +53,13 @@ Router(config)#hostname RouterGames
 RouterGames(config)#clock timezone Yemen 3
 RouterGames(config)#enable secret pass2
 RouterGames(config)#service password-encryption
-RouterGames(config)#line cons 0
-RouterGames(config-line)#exit
 RouterGames(config)#line console 0
 RouterGames(config-line)#password cons1
 RouterGames(config-line)#login 
 RouterGames(config-line)#exit
 RouterGames(config)#exit
 RouterGames#copy running-config startup-config 
-Destination filename [startup-config]? 
-Building configuration...
-[OK]
+
 ------------------------------------------------
 			SwitchAdmin
 Switch>enable
@@ -68,11 +72,18 @@ SwitchAdmin(config-line)#password cons4
 SwitchAdmin(config-line)#login
 SwitchAdmin(config-line)#exit
 SwitchAdmin(config)#enable secret pass4
+SwitchAdmin(config)#line vty 0 4
+SwitchAdmin(config-line)#password vty4
+SwitchAdmin(config-line)#login
+SwitchAdmin(config-line)#exit
+SwitchAdmin(config)#interface vlan 3
+SwitchAdmin(config-if)#ip address 192.168.30.2 255.255.255.0
+SwitchAdmin(config-if)#no shutdown 
+SwitchAdmin(config-if)#exit
+SwitchAdmin(config)#ip default-gateway 192.168.30.1 
+SwitchAdmin(config)#service password-encryption
 SwitchAdmin(config)#exit
 SwitchAdmin#copy running-config startup-config 
-Destination filename [startup-config]? 
-Building configuration...
-[OK]
 
 -------------------------------------------------
 			SwitchGames
