@@ -92,94 +92,127 @@ Building configuration...
 [OK]
 
 ------------------------------------------------
-			R_no1
+			R_MAINT_A
+
 Router>enable
-Router#clock set 02:37:00 Jan 30 2026
+Router#clock set 12:19:00 Feb 1 2026
 Router#config terminal
-Router(config)#hostname R_no1
-R_no1(config)#clock timezone Yemen 3
-R_no1(config)#enable secret network1
-R_no1(config)#service password-encryption
-R_no1(config)#line cons 0
-R_no1(config-line)#password net1
-R_no1(config-line)#login
-R_no1(config-line)#exit
-R_no1(config)#exit
-R_no1#copy running-config startup-config 
-Destination filename [startup-config]? 
-Building configuration...
-[OK]
+Router(config)#hostname R_MAINT_A
+R_MAINT_A(config)#no ip domain-lookup
+R_MAINT_A(config)#service password-encryption
+R_MAINT_A(config)#clock timezone Yemen 3
+R_MAINT_A(config)#enable secret routmainta
+R_MAINT_A(config)#line console 0
+R_MAINT_A(config-line)#password conmainta
+R_MAINT_A(config-line)#login 
+R_MAINT_A(config-line)#exit
+R_MAINT_A(config)#line vty 0 4
+R_MAINT_A(config-line)#password vtymainta
+R_MAINT_A(config-line)#login
+R_MAINT_A(config-line)#exit
+R_MAINT_A(config)#interface fastEthernet 0/1
+R_MAINT_A(config-if)#description LAN_MAINT_A
+R_MAINT_A(config-if)#ip address 172.16.10.1 255.255.255.0
+R_MAINT_A(config-if)#no shutdown
+R_MAINT_A(config-if)#exit
+R_MAINT_A(config)#interface fastEthernet 0/0
+R_MAINT_A(config-if)#description LINK_TO_R_MAINT_B
+R_MAINT_A(config-if)#ip address 172.16.100.2 255.255.255.252
+R_MAINT_A(config-if)#no shutdown 
+R_MAINT_A(config-if)#exit
+R_MAINT_A(config)#exit
+R_MAINT_A#copy running-config startup-config 
 
 -------------------------------------------------
-			R_no2
+			R_MAINT_B
+
 Router>enable
-Router#clock set 02:37:00 Jan 30 2026
+Router#clock set 11:44:00 Feb 1 2026
 Router#config terminal
-Router(config)#clock timezone Yemen 3
-Router(config)#hostname R_no2
-R_no2(config)#enable secret network2
-R_no2(config)#service password-encryption
-R_no2(config)#line cons 0
-R_no2(config-line)#password net2
-R_no2(config-line)#login
-R_no2(config-line)#exit
-R_no2(config)#exit
-R_no2#copy running-config startup-config
-Destination filename [startup-config]? 
-Building configuration...
-[OK]
+Router(config)#hostname R_MAINT_B
+R_MAINT_B(config)#no ip domain-lookup
+R_MAINT_B(config)#service password-encryption
+R_MAINT_B(config)#clock timezone Yemen 3
+R_MAINT_B(config)#enable secret routmaintb
+R_MAINT_B(config)#line console 0
+R_MAINT_B(config-line)#password conmaintb
+R_MAINT_B(config-line)#login 
+R_MAINT_B(config-line)#exit
+R_MAINT_B(config)#line vty 0 4
+R_MAINT_B(config-line)#password vtymaintb
+R_MAINT_B(config-line)#login
+R_MAINT_B(config-line)#exit
+R_MAINT_B(config)#interface GigabitEthernet 0/1
+R_MAINT_B(config-if)#description LAN_MAINT_B
+R_MAINT_B(config-if)#ip address 172.16.20.1 255.255.255.0
+R_MAINT_B(config-if)#no shutdown
+R_MAINT_B(config-if)#exit
+R_MAINT_B(config)#interface GigabitEthernet 0/0
+R_MAINT_B(config-if)#description LINK_TO_R_MAINT_A
+R_MAINT_B(config-if)#ip address 172.16.100.1 255.255.255.252
+R_MAINT_B(config-if)#no shutdown 
+R_MAINT_B(config-if)#exit
+R_MAINT_B(config)#exit
+R_MAINT_B#copy running-config startup-config 
 
 ------------------------------------------------
-			S_no1
-Switch#en
-Switch#clock set 02:37:00 Jan 30 2026
-Switch#config terminal
-Enter configuration commands, one per line.  End with CNTL/Z.
-Switch(config)#clock timezone Yemen 3
-Switch(config)#enable secret network1
-Switch(config)#service password-encryption
-Switch(config)#line cons 0
-Switch(config-line)#password net1
-Switch(config-line)#login
-Switch(config-line)#exit
-Switch(config)#exit
-Switch#
-%SYS-5-CONFIG_I: Configured from console by console
-Switch#copy running-config startup-config
-Destination filename [startup-config]? 
-Building configuration...
-[OK]
-Switch#config terminal
-Enter configuration commands, one per line.  End with CNTL/Z.
-Switch(config)#host
-Switch(config)#hostname S_no1
-S_no1(config)#exit
-S_no1#
-%SYS-5-CONFIG_I: Configured from console by console
-S_no1#copy running-config startup-config
-Destination filename [startup-config]? 
-Building configuration...
-[OK]
-------------------------------------------------		
-			S_no2
-Switch>enable
-Switch#clock set 02:37:00 Jan 30 2026
-Switch#config terminal
-Enter configuration commands, one per line.  End with CNTL/Z.
-Switch(config)#hostname S_no2
-S_no2(config)#clock timezone Yemen 3
-S_no2(config)#enable secret network2
-S_no2(config)#service password-encryption
-S_no2(config)#line cons 0
-S_no2(config-line)#password net2
-S_no2(config-line)#login
-S_no2(config-line)#exit
-S_no2(config)#exit
-S_no2#
-%SYS-5-CONFIG_I: Configured from console by console
-S_no2#copy running-config startup-config
-Destination filename [startup-config]? 
-Building configuration...
-[OK]
+			SW_MAINT_A
+Switch>enable 
+Switch#configure terminal 
+Switch(config)#hostname SW_MAINT_A
+SW_MAINT_A(config)#clock timezone Yemen 3
+SW_MAINT_A(config)#exit
+SW_MAINT_A#clock set 10:37:00 Feb 1 2026
+SW_MAINT_A#configure terminal 
+SW_MAINT_A(config)#no ip domain-lookup 
+SW_MAINT_A(config)#line console 0
+SW_MAINT_A(config-line)#password maineta
+SW_MAINT_A(config-line)#login
+SW_MAINT_A(config-line)#exit
+SW_MAINT_A(config)#line vty 0 4
+SW_MAINT_A(config-line)#password mainvtya
+SW_MAINT_A(config-line)#login
+SW_MAINT_A(config-line)#exit
+SW_MAINT_A(config)#service password-encryption 
+SW_MAINT_A(config)#interface vlan 1
+SW_MAINT_A(config-if)#ip address 172.16.10.2 255.255.255.0
+SW_MAINT_A(config-if)#no shutdown 
+SW_MAINT_A(config-if)#exit
+SW_MAINT_A(config)#ip default-gateway 172.16.10.1
+SW_MAINT_A(config)#interface range fastEthernet 0/2-3
+SW_MAINT_A(config-if-range)#switchport mode access
+SW_MAINT_A(config-if-range)#spanning-tree portfast 
+SW_MAINT_A(config-if-range)#exit
+SW_MAINT_A(config)#exit
+SW_MAINT_A#copy running-config startup-config 
 
 ------------------------------------------------
+			SW_MAINT_B
+Switch>enable 
+Switch#configure terminal 
+Switch(config)#hostname SW_MAINT_B
+SW_MAINT_B(config)#clock timezone Yemen 3
+SW_MAINT_B(config)#exit
+SW_MAINT_B#clock set 10:37:00 Feb 1 2026
+SW_MAINT_B#configure terminal 
+SW_MAINT_B(config)#no ip domain-lookup 
+SW_MAINT_B(config)#line console 0
+SW_MAINT_B(config-line)#password mainetb
+SW_MAINT_B(config-line)#login
+SW_MAINT_B(config-line)#exit
+SW_MAINT_B(config)#line vty 0 4
+SW_MAINT_B(config-line)#password mainvtyb
+SW_MAINT_B(config-line)#login
+SW_MAINT_B(config-line)#exit
+SW_MAINT_B(config)#service password-encryption 
+SW_MAINT_B(config)#interface vlan 1
+SW_MAINT_B(config-if)#ip address 172.16.20.2 255.255.255.0
+SW_MAINT_B(config-if)#no shutdown 
+SW_MAINT_B(config-if)#exit
+SW_MAINT_B(config)#ip default-gateway 172.16.20.1
+SW_MAINT_B(config)#interface range fastEthernet 0/2-3
+SW_MAINT_B(config-if-range)#switchport mode access
+SW_MAINT_B(config-if-range)#spanning-tree portfast 
+SW_MAINT_B(config-if-range)#exit
+SW_MAINT_B(config)#exit
+SW_MAINT_B#copy running-config startup-config 
