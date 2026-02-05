@@ -26,10 +26,12 @@ RouterISP(config-line)#login
 RouterISP(config-line)#exit
 RouterISP(config)#interface fa0/1 
 RouterISP(config-if)#ip add 10.0.0.10 255.0.0.0
-RouterISP(config-if)#no shu
 RouterISP(config-if)#no shutdown 
 RouterISP(config-if)#interface fa0/0
 RouterISP(config-if)#ip add 20.0.0.10 255.0.0.0
+RouterISP(config-if)#no shutdown 
+RouterISP(config)#interface f1/0
+RouterISP(config-if)#ip add 30.0.0.2 255.255.255.252
 RouterISP(config-if)#no shutdown 
 RouterISP(config-if)#exit
 RouterISP(config)#route rip
@@ -37,6 +39,7 @@ RouterISP(config-router)#version 2
 RouterISP(config-router)#no auto-summary 
 RouterISP(config-router)#network 10.0.0.0 
 RouterISP(config-router)#network 20.0.0.0 
+RouterISP(config-router)#network 30.0.0.0
 RouterISP(config-router)#exit
 RouterISP(config)#exit
 RouterISP#copy running-config startup-config 
@@ -79,6 +82,15 @@ RouterAdmin(config)#line vty 0 4
 RouterAdmin(config-line)#transport input ssh
 RouterAdmin(config-line)#login local
 RouterAdmin(config-line)#exit
+RouterAdmin(config)#line aux 0
+RouterAdmin(config-line)#passw
+RouterAdmin(config-line)#password aux1
+RouterAdmin(config-line)#login
+RouterAdmin(config-line)#exit
+RouterAdmin(config)#aaa new-model
+RouterAdmin(config)#username admin_boss privilege 15 secret admin1
+RouterAdmin(config)#aaa authentication login default local
+RouterAdmin(config)#aaa authorization exec default local
 RouterAdmin(config)#rout rip
 RouterAdmin(config-router)#version 2
 RouterAdmin(config-router)#no auto-summary 
@@ -158,6 +170,13 @@ SwitchAdmin(config)#interface vlan 3
 SwitchAdmin(config-if)#ip address 192.168.30.2 255.255.255.0
 SwitchAdmin(config-if)#no shutdown 
 SwitchAdmin(config-if)#exit
+SwitchAdmin(config)#interface range fa0/1 - 10
+SwitchAdmin(config-if-range)#switchport mode access
+SwitchAdmin(config-if-range)#switchport port-security
+SwitchAdmin(config-if-range)#switchport port-security maximum 1  
+SwitchAdmin(config-if-range)#switchport port-security mac-address sticky
+SwitchAdmin(config-if-range)#switchport port-security violation shutdown
+SwitchAdmin(config-if-range)#exit
 SwitchAdmin(config)#ip default-gateway 192.168.30.1 
 SwitchAdmin(config)#service password-encryption
 SwitchAdmin(config)#exit
@@ -204,6 +223,13 @@ SwitchGames(config-if)#ip address 192.168.10.2 255.255.255.0
 SwitchGames(config-if)#no shu
 SwitchGames(config-if)#no shutdown 
 SwitchGames(config-if)#exi
+SwitchGames(config)#interface range fa0/1 - 10
+SwitchGames(config-if-range)#switchport mode access
+SwitchGames(config-if-range)#switchport port-security
+SwitchGames(config-if-range)#switchport port-security maximum 1  
+SwitchGames(config-if-range)#switchport port-security mac-address sticky
+SwitchGames(config-if-range)#switchport port-security violation shutdown
+SwitchGames(config-if-range)#exit
 SwitchGames(config)#interface vlan 20
 SwitchGames(config-if)#ip address 192.168.10.3 255.255.255.0
 SwitchGames(config-if)#no shutdown 
@@ -244,7 +270,22 @@ R_MAINT_A(config-if)#description LINK_TO_R_MAINT_B
 R_MAINT_A(config-if)#ip address 172.16.100.2 255.255.255.252
 R_MAINT_A(config-if)#no shutdown 
 R_MAINT_A(config-if)#exit
+R_MAINT_A(config)#aaa new-model
+R_MAINT_A(config)#username tech_admin privilege 15 secret 123
+R_MAINT_A(config)#aaa authentication login default local
+R_MAINT_A(config)#aaa authorization exec default local
 R_MAINT_A(config)#ip route 172.16.20.0 255.255.255.0 172.16.100.1
+R_MAINT_A(config)#rout rip
+R_MAINT_A(config-router)#version 2
+R_MAINT_A(config-router)#no auto-summary 
+R_MAINT_A(config-router)#network 30.0.0.0
+R_MAINT_A(config-router)#network 172.16.0.0
+R_MAINT_A(config-router)#redistribute static 
+R_MAINT_A(config-router)#exit
+R_MAINT_A(config)#interface gig0/2
+R_MAINT_A(config-if)#ip add 30.0.0.1 255.255.255.252
+R_MAINT_A(config-if)#no shut
+R_MAINT_A(config-if)#exit
 R_MAINT_A(config)#exit
 R_MAINT_A#copy running-config startup-config 
 
