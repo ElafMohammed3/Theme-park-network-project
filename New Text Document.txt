@@ -98,6 +98,11 @@ RouterAdmin(config-router)#network 192.168.30.0
 RouterAdmin(config-router)#network 20.0.0.0 
 RouterAdmin(config-router)#exit
 RouterAdmin(config)#banner motd
+RouterAdmin(config)#access-list 10 permit 192.168.30.0 0.0.0.255
+RouterAdmin(config)#line vty 0 15
+RouterAdmin(config-line)#access-class 10 in
+RouterAdmin(config-line)#transport input ssh
+RouterAdmin(config-line)#exit
 RouterAdmin(config)#exit
 RouterAdmin#copy running-config startup-config 
 
@@ -134,6 +139,17 @@ RouterGames(config-router)#network 192.168.10.0
 RouterGames(config-router)#network 192.168.20.0 
 RouterGames(config-router)#exit
 RouterGames(config)#banner motd # welcome to Router Games#
+RouterGames(config)#ip access-list extended CONTROL
+RouterGames(config-ext-nacl)#permit ip 192.168.20.0 0.0.0.255 172.16.0.0 0.0.255.255
+RouterGames(config-ext-nacl)#permit ip 192.168.20.0 0.0.0.255 192.168.10.0 0.0.0.255
+RouterGames(config-ext-nacl)#deny ip 192.168.20.0 0.0.0.255 192.168.30.0 0.0.0.255
+RouterGames(config-ext-nacl)#permit ip any any
+RouterGames(config-ext-nacl)#exit
+RouterGames(config)#interface f0/1.10
+RouterGames(config-subif)#ip access-group tickets in
+RouterGames(config-subif)#interface f0/1.20
+RouterGames(config-subif)#ip access-group CONTROL in
+RouterGames(config-subif)#exit
 RouterGames(config)#exit
 RouterGames#copy running-config startup-config 
 
@@ -371,6 +387,14 @@ SW_MAINT_A(config)#interface range fastEthernet 0/2-3
 SW_MAINT_A(config-if-range)#switchport mode access
 SW_MAINT_A(config-if-range)#spanning-tree portfast 
 SW_MAINT_A(config-if-range)#exit
+R_MAINT_A(config)#ip access-list extended MAINTENANCE
+R_MAINT_A(config-ext-nacl)#permit ip 172.16.0.0 0.0.255.255 192.168.20.0 0.0.0.255
+R_MAINT_A(config-ext-nacl)#deny ip 172.16.0.0 0.0.255.255 192.168.30.0 0.0.0.255
+R_MAINT_A(config-ext-nacl)# deny ip any any
+R_MAINT_A(config-ext-nacl)#exit
+R_MAINT_A(config)#interface gig0/1
+R_MAINT_A(config-if)#ip access-group MAINTENANCE in
+R_MAINT_A(config-if)#exit
 SW_MAINT_A(config)#exit
 SW_MAINT_A#copy running-config startup-config 
 
