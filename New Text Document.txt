@@ -235,6 +235,26 @@ SwitchGames(config-if)#ip address 192.168.10.3 255.255.255.0
 SwitchGames(config-if)#no shutdown 
 SwitchGames(config-if)#exit
 SwitchGames(config)#ip default-gateway 192.168.10.1
+SwitchGames(config)#inter f0/1
+SwitchGames(config-if)#switch
+SwitchGames(config-if)#switchport mode trunk
+SwitchGames(config-if)#no shutd
+SwitchGames(config-if)#inter range f0/2-7
+SwitchGames(config-if-range)#switchport port-security violation restrict 
+SwitchGames(config-if-range)#switchport mode access
+SwitchGames(config-if-range)#switchport access vlan 10
+SwitchGames(config-if-range)#switchport port-security maxim 10
+SwitchGames(config-if-range)#switchport port-security mac-address sticky
+SwitchGames(config-if-range)#shutd
+SwitchGames(config-if-range)#no shutd
+SwitchGames(config-if-range)#inter range f0/8-10
+SwitchGames(config-if-range)#switchport mode access
+SwitchGames(config-if-range)#switchport access vlan 20
+SwitchGames(config-if-range)#switchport port-security 
+SwitchGames(config-if-range)#switchport port-security  maxim 3
+SwitchGames(config-if-range)#switchport port-security  mac-add sticky
+SwitchGames(config-if-range)#shutd
+SwitchGames(config-if-range)#no shutd
 SwitchGames(config)#exit
 SwitchGames#copy running-config startup-config 
 Destination filename [startup-config]? 
@@ -319,6 +339,7 @@ R_MAINT_B(config-if)#ip address 172.16.100.1 255.255.255.252
 R_MAINT_B(config-if)#no shutdown 
 R_MAINT_B(config-if)#exit
 R_MAINT_B(config)#ip route 172.16.10.0 255.255.255.0 172.16.100.2
+R_MAINT_B(config)#ip route 0.0.0.0 0.0.0.0 172.16.100.2
 R_MAINT_B(config)#exit
 R_MAINT_B#copy running-config startup-config 
 
@@ -725,4 +746,55 @@ Ping statistics for 192.168.30.10:
 Approximate round trip times in milli-seconds:
     Minimum = 0ms, Maximum = 1ms, Average = 0ms
 
+===========================================================
+				Ping between PC_CONTROL_2 in Maintenance Network and Games Area vlan 20:
+Cisco Packet Tracer PC Command Line 1.0
+C:\>ping 192.168.20.10
 
+Pinging 192.168.20.10 with 32 bytes of data:
+
+Reply from 192.168.20.10: bytes=32 time<1ms TTL=124
+Reply from 192.168.20.10: bytes=32 time<1ms TTL=124
+Reply from 192.168.20.10: bytes=32 time<1ms TTL=124
+Reply from 192.168.20.10: bytes=32 time=13ms TTL=124
+
+Ping statistics for 192.168.20.10:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 0ms, Maximum = 13ms, Average = 3ms
+
+
+
+===========================================================
+				Ping between PC_CONTROL_2 in Maintenance Network and server:
+C:\>ping 192.168.30.10
+
+Pinging 192.168.30.10 with 32 bytes of data:
+
+Reply from 192.168.30.10: bytes=32 time=17ms TTL=124
+Reply from 192.168.30.10: bytes=32 time<1ms TTL=124
+Reply from 192.168.30.10: bytes=32 time<1ms TTL=124
+Reply from 192.168.30.10: bytes=32 time<1ms TTL=124
+
+Ping statistics for 192.168.30.10:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 0ms, Maximum = 17ms, Average = 4ms
+
+===========================================================
+				Ping between PC_CONTROL_1 in Maintenance Network and Games Area vlan 10:
+
+Cisco Packet Tracer PC Command Line 1.0
+C:\>ping 192.168.10.11
+
+Pinging 192.168.10.11 with 32 bytes of data:
+
+Reply from 192.168.10.11: bytes=32 time<1ms TTL=124
+Reply from 192.168.10.11: bytes=32 time<1ms TTL=124
+Reply from 192.168.10.11: bytes=32 time<1ms TTL=124
+Reply from 192.168.10.11: bytes=32 time<1ms TTL=124
+
+Ping statistics for 192.168.10.11:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 0ms, Maximum = 0ms, Average = 0ms
