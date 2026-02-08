@@ -244,6 +244,7 @@ R_MAINT_A(config-if)#description LINK_TO_R_MAINT_B
 R_MAINT_A(config-if)#ip address 172.16.100.2 255.255.255.252
 R_MAINT_A(config-if)#no shutdown 
 R_MAINT_A(config-if)#exit
+R_MAINT_A(config)#ip route 172.16.20.0 255.255.255.0 172.16.100.1
 R_MAINT_A(config)#exit
 R_MAINT_A#copy running-config startup-config 
 
@@ -276,6 +277,7 @@ R_MAINT_B(config-if)#description LINK_TO_R_MAINT_A
 R_MAINT_B(config-if)#ip address 172.16.100.1 255.255.255.252
 R_MAINT_B(config-if)#no shutdown 
 R_MAINT_B(config-if)#exit
+R_MAINT_B(config)#ip route 172.16.10.0 255.255.255.0 172.16.100.2
 R_MAINT_B(config)#exit
 R_MAINT_B#copy running-config startup-config 
 
@@ -340,3 +342,346 @@ SW_MAINT_B(config-if-range)#spanning-tree portfast
 SW_MAINT_B(config-if-range)#exit
 SW_MAINT_B(config)#exit
 SW_MAINT_B#copy running-config startup-config 
+
+
+=======================================================
+					ping in Maintenance Network
+	ping from network R_MAINT_A from device PC_MAINT_1:
+from PC_MAINT_1 to PC_MAINT_2:
+C:\>ping 172.16.10.11
+
+Pinging 172.16.10.11 with 32 bytes of data:
+
+Reply from 172.16.10.11: bytes=32 time<1ms TTL=128
+Reply from 172.16.10.11: bytes=32 time<1ms TTL=128
+Reply from 172.16.10.11: bytes=32 time<1ms TTL=128
+Reply from 172.16.10.11: bytes=32 time<1ms TTL=128
+
+Ping statistics for 172.16.10.11:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 0ms, Maximum = 0ms, Average = 0ms
+
+from PC_MAINT_1 to R_MAINT_A:
+C:\>ping 172.16.10.1
+
+Pinging 172.16.10.1 with 32 bytes of data:
+
+Reply from 172.16.10.1: bytes=32 time<1ms TTL=255
+Reply from 172.16.10.1: bytes=32 time<1ms TTL=255
+Reply from 172.16.10.1: bytes=32 time<1ms TTL=255
+Reply from 172.16.10.1: bytes=32 time<1ms TTL=255
+
+Ping statistics for 172.16.10.1:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 0ms, Maximum = 0ms, Average = 0ms
+
+from PC_MAINT_1 to R_MAINT_B:
+C:\>ping 172.16.20.1
+
+Pinging 172.16.20.1 with 32 bytes of data:
+
+Reply from 172.16.20.1: bytes=32 time<1ms TTL=254
+Reply from 172.16.20.1: bytes=32 time<1ms TTL=254
+Reply from 172.16.20.1: bytes=32 time<1ms TTL=254
+Reply from 172.16.20.1: bytes=32 time<1ms TTL=254
+
+Ping statistics for 172.16.20.1:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 0ms, Maximum = 0ms, Average = 0ms
+
+from PC_MAINT_1 to PC_CONTROL_1:
+C:\>ping 172.16.20.10
+
+Pinging 172.16.20.10 with 32 bytes of data:
+
+Reply from 172.16.20.10: bytes=32 time<1ms TTL=126
+Reply from 172.16.20.10: bytes=32 time<1ms TTL=126
+Reply from 172.16.20.10: bytes=32 time<1ms TTL=126
+Reply from 172.16.20.10: bytes=32 time<1ms TTL=126
+
+Ping statistics for 172.16.20.10:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 0ms, Maximum = 0ms, Average = 0ms
+
+from PC_MAINT_1 to PC_CONTROL_2:
+C:\>ping 172.16.20.11
+
+Pinging 172.16.20.11 with 32 bytes of data:
+
+Reply from 172.16.20.11: bytes=32 time<1ms TTL=126
+Reply from 172.16.20.11: bytes=32 time<1ms TTL=126
+Reply from 172.16.20.11: bytes=32 time=6ms TTL=126
+Reply from 172.16.20.11: bytes=32 time<1ms TTL=126
+
+Ping statistics for 172.16.20.11:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 0ms, Maximum = 6ms, Average = 1ms
+
+
+	ping from network R_MAINT_B from device PC_CONTROL_1:
+from PC_CONTROL_1 to PC_CONTROL_2:
+C:\>ping 172.16.20.11
+
+Pinging 172.16.20.11 with 32 bytes of data:
+
+Reply from 172.16.20.11: bytes=32 time<1ms TTL=128
+Reply from 172.16.20.11: bytes=32 time<1ms TTL=128
+Reply from 172.16.20.11: bytes=32 time<1ms TTL=128
+Reply from 172.16.20.11: bytes=32 time<1ms TTL=128
+
+Ping statistics for 172.16.20.11:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 0ms, Maximum = 0ms, Average = 0ms
+
+from PC_CONTROL_1 to R_MAINT_B:
+C:\>ping 172.16.20.1
+
+Pinging 172.16.20.1 with 32 bytes of data:
+
+Reply from 172.16.20.1: bytes=32 time<1ms TTL=255
+Reply from 172.16.20.1: bytes=32 time<1ms TTL=255
+Reply from 172.16.20.1: bytes=32 time=5ms TTL=255
+Reply from 172.16.20.1: bytes=32 time<1ms TTL=255
+
+Ping statistics for 172.16.20.1:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 0ms, Maximum = 5ms, Average = 1ms
+
+from PC_CONTROL_1 to R_MAINT_A:
+C:\>ping 172.16.10.1
+
+Pinging 172.16.10.1 with 32 bytes of data:
+
+Reply from 172.16.10.1: bytes=32 time<1ms TTL=254
+Reply from 172.16.10.1: bytes=32 time<1ms TTL=254
+Reply from 172.16.10.1: bytes=32 time<1ms TTL=254
+Reply from 172.16.10.1: bytes=32 time<1ms TTL=254
+
+Ping statistics for 172.16.10.1:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 0ms, Maximum = 0ms, Average = 0ms
+
+from PC_CONTROL_1 to PC_MAINT_1:
+C:\>ping 172.16.10.10
+
+Pinging 172.16.10.10 with 32 bytes of data:
+
+Reply from 172.16.10.10: bytes=32 time=1ms TTL=126
+Reply from 172.16.10.10: bytes=32 time<1ms TTL=126
+Reply from 172.16.10.10: bytes=32 time<1ms TTL=126
+Reply from 172.16.10.10: bytes=32 time=6ms TTL=126
+
+Ping statistics for 172.16.10.10:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 0ms, Maximum = 6ms, Average = 1ms
+
+from PC_CONTROL_1 to PC_MAINT_2:
+C:\>ping 172.16.10.11
+
+Pinging 172.16.10.11 with 32 bytes of data:
+
+Reply from 172.16.10.11: bytes=32 time<1ms TTL=126
+Reply from 172.16.10.11: bytes=32 time=3ms TTL=126
+Reply from 172.16.10.11: bytes=32 time=7ms TTL=126
+Reply from 172.16.10.11: bytes=32 time<1ms TTL=126
+
+Ping statistics for 172.16.10.11:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 0ms, Maximum = 7ms, Average = 2ms
+
+-------------------------------------------------
+				ping in Games Area Network:
+from control_Office to  ticket booth 1 PC:
+C:\>ping 192.168.10.13
+
+Pinging 192.168.10.13 with 32 bytes of data:
+
+Reply from 192.168.10.13: bytes=32 time<1ms TTL=127
+Reply from 192.168.10.13: bytes=32 time=1ms TTL=127
+Reply from 192.168.10.13: bytes=32 time<1ms TTL=127
+Reply from 192.168.10.13: bytes=32 time=1ms TTL=127
+
+Ping statistics for 192.168.10.13:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 0ms, Maximum = 1ms, Average = 0ms
+
+from control_Office to  ticket booth 1 Printer:
+C:\>ping 192.168.10.21
+
+Pinging 192.168.10.21 with 32 bytes of data:
+
+Reply from 192.168.10.21: bytes=32 time<1ms TTL=127
+Reply from 192.168.10.21: bytes=32 time=4ms TTL=127
+Reply from 192.168.10.21: bytes=32 time<1ms TTL=127
+Reply from 192.168.10.21: bytes=32 time<1ms TTL=127
+
+Ping statistics for 192.168.10.21:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 0ms, Maximum = 4ms, Average = 1ms
+
+from control_Office to  ticket booth 2 PC:
+C:\>ping 192.168.10.12
+
+Pinging 192.168.10.12 with 32 bytes of data:
+
+Reply from 192.168.10.12: bytes=32 time<1ms TTL=127
+Reply from 192.168.10.12: bytes=32 time<1ms TTL=127
+Reply from 192.168.10.12: bytes=32 time<1ms TTL=127
+Reply from 192.168.10.12: bytes=32 time<1ms TTL=127
+
+Ping statistics for 192.168.10.12:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 0ms, Maximum = 0ms, Average = 0ms
+
+from control_Office to  ticket booth 2 Printer:
+C:\>ping 192.168.10.22
+
+Pinging 192.168.10.22 with 32 bytes of data:
+
+Reply from 192.168.10.22: bytes=32 time<1ms TTL=127
+Reply from 192.168.10.22: bytes=32 time<1ms TTL=127
+Reply from 192.168.10.22: bytes=32 time<1ms TTL=127
+Reply from 192.168.10.22: bytes=32 time<1ms TTL=127
+
+Ping statistics for 192.168.10.22:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 0ms, Maximum = 0ms, Average = 0ms
+
+from control_Office to  ticket booth 3 PC:
+C:\>ping 192.168.10.23
+
+Pinging 192.168.10.23 with 32 bytes of data:
+
+Reply from 192.168.10.23: bytes=32 time<1ms TTL=127
+Reply from 192.168.10.23: bytes=32 time=1ms TTL=127
+Reply from 192.168.10.23: bytes=32 time=1ms TTL=127
+Reply from 192.168.10.23: bytes=32 time<1ms TTL=127
+
+Ping statistics for 192.168.10.23:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 0ms, Maximum = 1ms, Average = 0ms
+
+from control_Office to  ticket booth 3 Printer:
+C:\>ping 192.168.10.11
+
+Pinging 192.168.10.11 with 32 bytes of data:
+
+Reply from 192.168.10.11: bytes=32 time<1ms TTL=127
+Reply from 192.168.10.11: bytes=32 time<1ms TTL=127
+Reply from 192.168.10.11: bytes=32 time<1ms TTL=127
+Reply from 192.168.10.11: bytes=32 time<1ms TTL=127
+
+Ping statistics for 192.168.10.11:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 0ms, Maximum = 0ms, Average = 0ms
+
+-------------------------------------------------------
+					ping in Office Building Network:
+from office-1 to RouterAdmin :
+C:\>ping 192.168.30.1
+
+Pinging 192.168.30.1 with 32 bytes of data:
+
+Reply from 192.168.30.1: bytes=32 time<1ms TTL=255
+Reply from 192.168.30.1: bytes=32 time<1ms TTL=255
+Reply from 192.168.30.1: bytes=32 time<1ms TTL=255
+Reply from 192.168.30.1: bytes=32 time<1ms TTL=255
+
+Ping statistics for 192.168.30.1:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 0ms, Maximum = 0ms, Average = 0ms
+
+from office-1 to server :
+C:\>ping 192.168.30.10
+
+Pinging 192.168.30.10 with 32 bytes of data:
+
+Reply from 192.168.30.10: bytes=32 time<1ms TTL=128
+Reply from 192.168.30.10: bytes=32 time<1ms TTL=128
+Reply from 192.168.30.10: bytes=32 time<1ms TTL=128
+Reply from 192.168.30.10: bytes=32 time<1ms TTL=128
+
+Ping statistics for 192.168.30.10:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 0ms, Maximum = 0ms, Average = 0ms
+
+from office-1 to office-2:
+C:\>ping 192.168.30.3
+
+Pinging 192.168.30.3 with 32 bytes of data:
+
+Reply from 192.168.30.3: bytes=32 time=1ms TTL=128
+Reply from 192.168.30.3: bytes=32 time<1ms TTL=128
+Reply from 192.168.30.3: bytes=32 time<1ms TTL=128
+Reply from 192.168.30.3: bytes=32 time<1ms TTL=128
+
+Ping statistics for 192.168.30.3:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 0ms, Maximum = 1ms, Average = 0ms
+
+from office-1 to office-3 PC:
+C:\>ping 192.168.30.4
+
+Pinging 192.168.30.4 with 32 bytes of data:
+
+Reply from 192.168.30.4: bytes=32 time<1ms TTL=128
+Reply from 192.168.30.4: bytes=32 time<1ms TTL=128
+Reply from 192.168.30.4: bytes=32 time<1ms TTL=128
+Reply from 192.168.30.4: bytes=32 time<1ms TTL=128
+
+Ping statistics for 192.168.30.4:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 0ms, Maximum = 0ms, Average = 0ms
+
+from office-1 to office-3 Printer:
+C:\>ping 192.168.30.5
+
+Pinging 192.168.30.5 with 32 bytes of data:
+
+Reply from 192.168.30.5: bytes=32 time<1ms TTL=128
+Reply from 192.168.30.5: bytes=32 time<1ms TTL=128
+Reply from 192.168.30.5: bytes=32 time<1ms TTL=128
+Reply from 192.168.30.5: bytes=32 time<1ms TTL=128
+
+Ping statistics for 192.168.30.5:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 0ms, Maximum = 0ms, Average = 0ms
+===========================================================
+				Ping between Office Building and Games Area:
+from control_Office to server:
+C:\>ping 192.168.30.10
+
+Pinging 192.168.30.10 with 32 bytes of data:
+
+Reply from 192.168.30.10: bytes=32 time<1ms TTL=125
+Reply from 192.168.30.10: bytes=32 time=1ms TTL=125
+Reply from 192.168.30.10: bytes=32 time<1ms TTL=125
+Reply from 192.168.30.10: bytes=32 time<1ms TTL=125
+
+Ping statistics for 192.168.30.10:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 0ms, Maximum = 1ms, Average = 0ms
+
+
