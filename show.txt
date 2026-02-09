@@ -1,0 +1,1674 @@
+	-----------------------------------------------------------------------------
+			RouterISP
+----------------------------------------------------------------------------
+			show running-config 
+Building configuration...
+
+Current configuration : 988 bytes
+!
+version 15.1
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+service password-encryption
+!
+hostname RouterISP
+!
+!
+!
+enable secret 5 $1$mERr$9cTjUIEqNGurQiFU.ZeCi1
+!
+!
+!
+clock timezone Yemen 3
+!
+!
+!
+!
+ip cef
+no ipv6 cef
+!
+!
+!
+!
+license udi pid CISCO2811/K9 sn FTX1017J2N2-
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+spanning-tree mode pvst
+!
+!
+!
+!
+!
+!
+interface FastEthernet0/0
+ ip address 20.0.0.10 255.0.0.0
+ duplex auto
+ speed auto
+!
+interface FastEthernet0/1
+ ip address 10.0.0.10 255.0.0.0
+ duplex auto
+ speed auto
+!
+interface FastEthernet1/0
+ ip address 30.0.0.2 255.255.255.252
+ duplex auto
+ speed auto
+!
+interface FastEthernet1/1
+ no ip address
+ duplex auto
+ speed auto
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+router rip
+ version 2
+ network 10.0.0.0
+ network 20.0.0.0
+ network 30.0.0.0
+ no auto-summary
+!
+ip classless
+!
+ip flow-export version 9
+!
+!
+!
+no cdp run
+!
+!
+!
+!
+!
+line con 0
+ password 7 082243401A49
+ login
+!
+line aux 0
+!
+line vty 0 4
+ login
+!
+!
+!
+end
+
+-----------------------------------------------------------------------------
+		show ip interface brief
+Interface              IP-Address      OK? Method Status                Protocol 
+FastEthernet0/0        20.0.0.10       YES NVRAM  up                    up 
+FastEthernet0/1        10.0.0.10       YES NVRAM  up                    up 
+FastEthernet1/0        30.0.0.2        YES manual up                    up 
+FastEthernet1/1        unassigned      YES unset  up                    down 
+Vlan1                  unassigned      YES unset  administratively down down
+-----------------------------------------------------------------------------
+		show ip route 
+Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2, E - EGP
+       i - IS-IS, L1 - IS-IS level-1, L2 - IS-IS level-2, ia - IS-IS inter area
+       * - candidate default, U - per-user static route, o - ODR
+       P - periodic downloaded static route
+
+Gateway of last resort is not set
+
+     10.0.0.0/8 is variably subnetted, 2 subnets, 2 masks
+C       10.0.0.0/8 is directly connected, FastEthernet0/1
+L       10.0.0.10/32 is directly connected, FastEthernet0/1
+     20.0.0.0/8 is variably subnetted, 2 subnets, 2 masks
+C       20.0.0.0/8 is directly connected, FastEthernet0/0
+L       20.0.0.10/32 is directly connected, FastEthernet0/0
+     30.0.0.0/8 is variably subnetted, 2 subnets, 2 masks
+C       30.0.0.0/30 is directly connected, FastEthernet1/0
+L       30.0.0.2/32 is directly connected, FastEthernet1/0
+     172.16.0.0/16 is variably subnetted, 3 subnets, 2 masks
+R       172.16.10.0/24 [120/1] via 30.0.0.1, 00:00:01, FastEthernet1/0
+R       172.16.20.0/24 [120/1] via 30.0.0.1, 00:00:01, FastEthernet1/0
+R       172.16.100.0/30 [120/1] via 30.0.0.1, 00:00:01, FastEthernet1/0
+R    192.168.10.0/24 [120/1] via 10.0.0.20, 00:00:18, FastEthernet0/1
+R    192.168.20.0/24 [120/1] via 10.0.0.20, 00:00:18, FastEthernet0/1
+R    192.168.30.0/24 [120/1] via 20.0.0.20, 00:00:14, FastEthernet0/0
+
+
+-----------------------------------------------------------------------------
+			RouterAdmin
+-----------------------------------------------------------------------------
+			show running-config 
+Building configuration...
+
+Current configuration : 1348 bytes
+!
+version 15.1
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+service password-encryption
+!
+hostname RouterAdmin
+!
+!
+!
+enable secret 5 $1$mERr$8iI/4M3cGdjLNKclMAx4G1
+!
+!
+!
+!
+!
+aaa new-model
+!
+aaa authentication login default local 
+!
+!
+aaa authorization exec default local
+!
+!
+clock timezone Yemen 3
+!
+!
+!
+!
+ip cef
+no ipv6 cef
+!
+!
+!
+username admin privilege 15 password 7 082048430017
+username admin_boss privilege 15 secret 5 $1$mERr$7n6je7c9FKvO.o.40Rj1Q0
+!
+!
+license udi pid CISCO2811/K9 sn FTX1017S58O-
+!
+!
+!
+!
+!
+!
+!
+!
+!
+ip domain-name www.themepark.com
+!
+!
+spanning-tree mode pvst
+!
+!
+!
+!
+!
+!
+interface FastEthernet0/0
+ ip address 20.0.0.20 255.0.0.0
+ duplex auto
+ speed auto
+!
+interface FastEthernet0/1
+ description LAN_ADMIN
+ ip address 192.168.30.1 255.255.255.0
+ ip access-group 100 in
+ duplex auto
+ speed auto
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+router rip
+ version 2
+ network 20.0.0.0
+ network 192.168.30.0
+ no auto-summary
+!
+ip classless
+!
+ip flow-export version 9
+!
+!
+access-list 10 permit 192.168.30.0 0.0.0.255
+access-list 100 permit ip any any
+!
+no cdp run
+!
+!
+!
+!
+!
+line con 0
+ password 7 082243401A48
+!
+line aux 0
+ password 7 0820595658
+!
+line vty 0 4
+ access-class 10 in
+ password 7 083758571B1854
+ transport input ssh
+line vty 5 15
+ access-class 10 in
+ transport input ssh
+!
+!
+!
+end
+
+
+-----------------------------------------------------------------------------
+			show ip route 
+Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2, E - EGP
+       i - IS-IS, L1 - IS-IS level-1, L2 - IS-IS level-2, ia - IS-IS inter area
+       * - candidate default, U - per-user static route, o - ODR
+       P - periodic downloaded static route
+
+Gateway of last resort is not set
+
+R    10.0.0.0/8 [120/1] via 20.0.0.10, 00:00:30, FastEthernet0/0
+     20.0.0.0/8 is variably subnetted, 2 subnets, 2 masks
+C       20.0.0.0/8 is directly connected, FastEthernet0/0
+L       20.0.0.20/32 is directly connected, FastEthernet0/0
+     30.0.0.0/30 is subnetted, 1 subnets
+R       30.0.0.0/30 [120/1] via 20.0.0.10, 00:00:30, FastEthernet0/0
+     172.16.0.0/16 is variably subnetted, 3 subnets, 2 masks
+R       172.16.10.0/24 [120/2] via 20.0.0.10, 00:00:30, FastEthernet0/0
+R       172.16.20.0/24 [120/2] via 20.0.0.10, 00:00:30, FastEthernet0/0
+R       172.16.100.0/30 [120/2] via 20.0.0.10, 00:00:30, FastEthernet0/0
+R    192.168.10.0/24 [120/2] via 20.0.0.10, 00:00:30, FastEthernet0/0
+R    192.168.20.0/24 [120/2] via 20.0.0.10, 00:00:30, FastEthernet0/0
+     192.168.30.0/24 is variably subnetted, 2 subnets, 2 masks
+C       192.168.30.0/24 is directly connected, FastEthernet0/1
+L       192.168.30.1/32 is directly connected, FastEthernet0/1
+-----------------------------------------------------------------------------
+		show ip interface brief
+Interface              IP-Address      OK? Method Status                Protocol 
+FastEthernet0/0        20.0.0.20       YES manual up                    up 
+FastEthernet0/1        192.168.30.1    YES manual up                    up 
+Vlan1                  unassigned      YES unset  administratively down down
+-----------------------------------------------------------------------------
+		RouterGames
+-----------------------------------------------------------------------------
+		show running-config 
+Building configuration...
+
+Current configuration : 1736 bytes
+!
+version 15.1
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+service password-encryption
+!
+hostname RouterGames
+!
+!
+!
+enable secret 5 $1$mERr$Wd5Ufrl8fX38wncb8YEtG1
+!
+!
+!
+clock timezone Yemen 3
+!
+!
+!
+!
+ip cef
+no ipv6 cef
+!
+!
+!
+username admin privilege 15 password 7 082048430017
+!
+!
+license udi pid CISCO2811/K9 sn FTX1017A707-
+!
+!
+!
+!
+!
+!
+!
+!
+!
+ip domain-name www.themepark.com
+!
+!
+spanning-tree mode pvst
+!
+!
+!
+!
+!
+!
+interface FastEthernet0/0
+ ip address 10.0.0.20 255.0.0.0
+ duplex auto
+ speed auto
+!
+interface FastEthernet0/1
+ no ip address
+ duplex auto
+ speed auto
+!
+interface FastEthernet0/1.10
+ encapsulation dot1Q 10
+ ip address 192.168.10.1 255.255.255.0
+ ip access-group tickets in
+!
+interface FastEthernet0/1.20
+ encapsulation dot1Q 20
+ ip address 192.168.20.1 255.255.255.0
+ ip access-group CONTROL in
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+router rip
+ version 2
+ network 10.0.0.0
+ network 192.168.10.0
+ network 192.168.20.0
+ no auto-summary
+!
+ip classless
+!
+ip flow-export version 9
+!
+!
+ip access-list extended CONTROL
+ permit ip 192.168.20.0 0.0.0.255 192.168.30.0 0.0.0.255
+ permit ip 192.168.20.0 0.0.0.255 172.16.0.0 0.0.255.255
+ deny ip 192.168.20.0 0.0.0.255 any
+ permit ip any any
+ip access-list extended tickets
+ permit udp 192.168.10.0 0.0.0.255 host 192.168.30.10 eq domain
+ permit tcp 192.168.10.0 0.0.0.255 host 192.168.30.10 eq www
+ permit tcp 192.168.10.0 0.0.0.255 host 192.168.30.10 eq 443
+ permit icmp 192.168.10.0 0.0.0.255 192.168.30.0 0.0.0.255
+ deny ip 192.168.10.0 0.0.0.255 192.168.30.0 0.0.0.255
+ permit ip any any
+!
+no cdp run
+!
+!
+!
+!
+!
+line con 0
+ password 7 082243401A48
+ login
+!
+line aux 0
+!
+line vty 0 4
+ login local
+ transport input telnet
+!
+!
+!
+end
+-----------------------------------------------------------------------------
+
+				show ip route 
+Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2, E - EGP
+       i - IS-IS, L1 - IS-IS level-1, L2 - IS-IS level-2, ia - IS-IS inter area
+       * - candidate default, U - per-user static route, o - ODR
+       P - periodic downloaded static route
+
+Gateway of last resort is not set
+
+     10.0.0.0/8 is variably subnetted, 2 subnets, 2 masks
+C       10.0.0.0/8 is directly connected, FastEthernet0/0
+L       10.0.0.20/32 is directly connected, FastEthernet0/0
+R    20.0.0.0/8 [120/1] via 10.0.0.10, 00:00:25, FastEthernet0/0
+     30.0.0.0/30 is subnetted, 1 subnets
+R       30.0.0.0/30 [120/1] via 10.0.0.10, 00:00:25, FastEthernet0/0
+     172.16.0.0/16 is variably subnetted, 3 subnets, 2 masks
+R       172.16.10.0/24 [120/2] via 10.0.0.10, 00:00:25, FastEthernet0/0
+R       172.16.20.0/24 [120/2] via 10.0.0.10, 00:00:25, FastEthernet0/0
+R       172.16.100.0/30 [120/2] via 10.0.0.10, 00:00:25, FastEthernet0/0
+     192.168.10.0/24 is variably subnetted, 2 subnets, 2 masks
+C       192.168.10.0/24 is directly connected, FastEthernet0/1.10
+L       192.168.10.1/32 is directly connected, FastEthernet0/1.10
+     192.168.20.0/24 is variably subnetted, 2 subnets, 2 masks
+C       192.168.20.0/24 is directly connected, FastEthernet0/1.20
+L       192.168.20.1/32 is directly connected, FastEthernet0/1.20
+R    192.168.30.0/24 [120/2] via 10.0.0.10, 00:00:25, FastEthernet0/0
+-----------------------------------------------------------------------------
+			show ip interface brief
+Interface              IP-Address      OK? Method Status                Protocol 
+FastEthernet0/0        10.0.0.20       YES manual up                    up 
+FastEthernet0/1        unassigned      YES unset  up                    up 
+FastEthernet0/1.10     192.168.10.1    YES manual up                    up 
+FastEthernet0/1.20     192.168.20.1    YES manual up                    up 
+Vlan1                  unassigned      YES unset  administratively down down
+
+
+
+
+
+R_MAINT_A#show running-config 
+Building configuration...
+
+Current configuration : 1571 bytes
+!
+version 15.1
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+service password-encryption
+!
+hostname R_MAINT_A
+!
+!
+!
+enable secret 5 $1$mERr$U1LL66eakkotMldqqt0d40
+!
+!
+!
+!
+!
+aaa new-model
+!
+aaa authentication login default local 
+!
+!
+aaa authorization exec default local
+!
+!
+clock timezone Yemen 3
+!
+!
+!
+!
+ip cef
+no ipv6 cef
+!
+!
+!
+username tech_admin privilege 15 secret 5 $1$mERr$3HhIgMGBA/9qNmgzccuxv0
+!
+!
+license udi pid CISCO2911/K9 sn FTX15246065-
+!
+!
+!
+!
+!
+!
+!
+!
+!
+no ip domain-lookup
+!
+!
+spanning-tree mode pvst
+!
+!
+!
+!
+!
+!
+interface GigabitEthernet0/0
+ description LINK_TO_R_MAINT_B
+ ip address 172.16.100.2 255.255.255.252
+ duplex auto
+ speed auto
+!
+interface GigabitEthernet0/1
+ description LAN_MAINT_A
+ ip address 172.16.10.1 255.255.255.0
+ ip access-group MAINTENANCE in
+ duplex auto
+ speed auto
+!
+interface GigabitEthernet0/2
+ ip address 30.0.0.1 255.255.255.252
+ duplex auto
+ speed auto
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+router rip
+ version 2
+ redistribute static 
+ network 30.0.0.0
+ network 172.16.0.0
+ no auto-summary
+!
+ip classless
+ip route 172.16.20.0 255.255.255.0 172.16.100.1 
+!
+ip flow-export version 9
+!
+!
+ip access-list extended MAINTENANCE
+ permit ip 172.16.10.0 0.0.0.255 192.168.20.0 0.0.0.255
+ permit ip 172.16.10.0 0.0.0.255 192.168.30.0 0.0.0.255
+ permit ip 172.16.10.0 0.0.0.255 172.16.20.0 0.0.0.255
+ deny ip 172.16.10.0 0.0.0.255 any
+ permit ip any any
+!
+no cdp run
+!
+!
+!
+!
+!
+line con 0
+ password 7 0822434004180C19060A
+!
+line aux 0
+!
+line vty 0 4
+ password 7 0837585704180C19060A
+!
+!
+!
+end
+
+
+R_MAINT_A#
+R_MAINT_A#
+R_MAINT_A#
+R_MAINT_A#show ip route 
+Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2, E - EGP
+       i - IS-IS, L1 - IS-IS level-1, L2 - IS-IS level-2, ia - IS-IS inter area
+       * - candidate default, U - per-user static route, o - ODR
+       P - periodic downloaded static route
+
+Gateway of last resort is not set
+
+R    10.0.0.0/8 [120/1] via 30.0.0.2, 00:00:15, GigabitEthernet0/2
+R    20.0.0.0/8 [120/1] via 30.0.0.2, 00:00:15, GigabitEthernet0/2
+     30.0.0.0/8 is variably subnetted, 2 subnets, 2 masks
+C       30.0.0.0/30 is directly connected, GigabitEthernet0/2
+L       30.0.0.1/32 is directly connected, GigabitEthernet0/2
+     172.16.0.0/16 is variably subnetted, 5 subnets, 3 masks
+C       172.16.10.0/24 is directly connected, GigabitEthernet0/1
+L       172.16.10.1/32 is directly connected, GigabitEthernet0/1
+S       172.16.20.0/24 [1/0] via 172.16.100.1
+C       172.16.100.0/30 is directly connected, GigabitEthernet0/0
+L       172.16.100.2/32 is directly connected, GigabitEthernet0/0
+R    192.168.10.0/24 [120/2] via 30.0.0.2, 00:00:15, GigabitEthernet0/2
+R    192.168.20.0/24 [120/2] via 30.0.0.2, 00:00:15, GigabitEthernet0/2
+R    192.168.30.0/24 [120/2] via 30.0.0.2, 00:00:15, GigabitEthernet0/2
+
+R_MAINT_A#
+R_MAINT_A#
+R_MAINT_A#
+R_MAINT_A#show ip interface brief
+Interface              IP-Address      OK? Method Status                Protocol 
+GigabitEthernet0/0     172.16.100.2    YES manual up                    up 
+GigabitEthernet0/1     172.16.10.1     YES manual up                    up 
+GigabitEthernet0/2     30.0.0.1        YES manual up                    up 
+Vlan1                  unassigned      YES unset  administratively down down
+
+
+
+
+
+
+-----------------------------------------------------------------------------
+
+			R_MAINT_A
+-----------------------------------------------------------------------------
+			show running-config 
+Building configuration...
+
+Current configuration : 1571 bytes
+!
+version 15.1
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+service password-encryption
+!
+hostname R_MAINT_A
+!
+!
+!
+enable secret 5 $1$mERr$U1LL66eakkotMldqqt0d40
+!
+!
+!
+!
+!
+aaa new-model
+!
+aaa authentication login default local 
+!
+!
+aaa authorization exec default local
+!
+!
+clock timezone Yemen 3
+!
+!
+!
+!
+ip cef
+no ipv6 cef
+!
+!
+!
+username tech_admin privilege 15 secret 5 $1$mERr$3HhIgMGBA/9qNmgzccuxv0
+!
+!
+license udi pid CISCO2911/K9 sn FTX15246065-
+!
+!
+!
+!
+!
+!
+!
+!
+!
+no ip domain-lookup
+!
+!
+spanning-tree mode pvst
+!
+!
+!
+!
+!
+!
+interface GigabitEthernet0/0
+ description LINK_TO_R_MAINT_B
+ ip address 172.16.100.2 255.255.255.252
+ duplex auto
+ speed auto
+!
+interface GigabitEthernet0/1
+ description LAN_MAINT_A
+ ip address 172.16.10.1 255.255.255.0
+ ip access-group MAINTENANCE in
+ duplex auto
+ speed auto
+!
+interface GigabitEthernet0/2
+ ip address 30.0.0.1 255.255.255.252
+ duplex auto
+ speed auto
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+router rip
+ version 2
+ redistribute static 
+ network 30.0.0.0
+ network 172.16.0.0
+ no auto-summary
+!
+ip classless
+ip route 172.16.20.0 255.255.255.0 172.16.100.1 
+!
+ip flow-export version 9
+!
+!
+ip access-list extended MAINTENANCE
+ permit ip 172.16.10.0 0.0.0.255 192.168.20.0 0.0.0.255
+ permit ip 172.16.10.0 0.0.0.255 192.168.30.0 0.0.0.255
+ permit ip 172.16.10.0 0.0.0.255 172.16.20.0 0.0.0.255
+ deny ip 172.16.10.0 0.0.0.255 any
+ permit ip any any
+!
+no cdp run
+!
+!
+!
+!
+!
+line con 0
+ password 7 0822434004180C19060A
+!
+line aux 0
+!
+line vty 0 4
+ password 7 0837585704180C19060A
+!
+!
+!
+end
+-----------------------------------------------------------------------------
+
+			show ip route 
+Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2, E - EGP
+       i - IS-IS, L1 - IS-IS level-1, L2 - IS-IS level-2, ia - IS-IS inter area
+       * - candidate default, U - per-user static route, o - ODR
+       P - periodic downloaded static route
+
+Gateway of last resort is not set
+
+R    10.0.0.0/8 [120/1] via 30.0.0.2, 00:00:15, GigabitEthernet0/2
+R    20.0.0.0/8 [120/1] via 30.0.0.2, 00:00:15, GigabitEthernet0/2
+     30.0.0.0/8 is variably subnetted, 2 subnets, 2 masks
+C       30.0.0.0/30 is directly connected, GigabitEthernet0/2
+L       30.0.0.1/32 is directly connected, GigabitEthernet0/2
+     172.16.0.0/16 is variably subnetted, 5 subnets, 3 masks
+C       172.16.10.0/24 is directly connected, GigabitEthernet0/1
+L       172.16.10.1/32 is directly connected, GigabitEthernet0/1
+S       172.16.20.0/24 [1/0] via 172.16.100.1
+C       172.16.100.0/30 is directly connected, GigabitEthernet0/0
+L       172.16.100.2/32 is directly connected, GigabitEthernet0/0
+R    192.168.10.0/24 [120/2] via 30.0.0.2, 00:00:15, GigabitEthernet0/2
+R    192.168.20.0/24 [120/2] via 30.0.0.2, 00:00:15, GigabitEthernet0/2
+R    192.168.30.0/24 [120/2] via 30.0.0.2, 00:00:15, GigabitEthernet0/2
+-----------------------------------------------------------------------------
+			R_MAINT_B
+-----------------------------------------------------------------------------
+			show runn
+Building configuration...
+
+Current configuration : 1125 bytes
+!
+version 15.1
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+service password-encryption
+!
+hostname R_MAINT_B
+!
+!
+!
+enable secret 5 $1$mERr$BqRCk7PPSQCSoiDUKEvSf1
+!
+!
+!
+clock timezone Yemen 3
+!
+!
+!
+!
+ip cef
+no ipv6 cef
+!
+!
+!
+!
+license udi pid CISCO2811/K9 sn FTX1017CNWF-
+!
+!
+!
+!
+!
+!
+!
+!
+!
+no ip domain-lookup
+!
+!
+spanning-tree mode pvst
+!
+!
+!
+!
+!
+!
+interface FastEthernet0/0
+ description LINK_TO_R_MAINT_A
+ ip address 172.16.100.1 255.255.255.252
+ duplex auto
+ speed auto
+!
+interface FastEthernet0/1
+ description LAN_MAINT_B
+ ip address 172.16.20.1 255.255.255.0
+ ip access-group MAINT_B in
+ duplex auto
+ speed auto
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+ip classless
+ip route 172.16.10.0 255.255.255.0 172.16.100.2 
+ip route 0.0.0.0 0.0.0.0 172.16.100.2 
+!
+ip flow-export version 9
+!
+!
+ip access-list extended MAINT_B
+ permit ip 172.16.20.0 0.0.0.255 192.168.30.0 0.0.0.255
+ deny ip 172.16.20.0 0.0.0.255 any
+ permit ip any any
+!
+no cdp run
+!
+!
+!
+!
+!
+line con 0
+ password 7 0822434004180C190609
+ login
+!
+line aux 0
+!
+line vty 0 4
+ password 7 0837585704180C190609
+ login
+!
+!
+!
+end
+-----------------------------------------------------------------------------
+		show ip interface brief
+Interface              IP-Address      OK? Method Status                Protocol 
+GigabitEthernet0/0     172.16.100.2    YES manual up                    up 
+GigabitEthernet0/1     172.16.10.1     YES manual up                    up 
+GigabitEthernet0/2     30.0.0.1        YES manual up                    up 
+Vlan1                  unassigned      YES unset  administratively down down
+-----------------------------------------------------------------------------
+
+		show ip route 
+Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2, E - EGP
+       i - IS-IS, L1 - IS-IS level-1, L2 - IS-IS level-2, ia - IS-IS inter area
+       * - candidate default, U - per-user static route, o - ODR
+       P - periodic downloaded static route
+
+Gateway of last resort is 172.16.100.2 to network 0.0.0.0
+
+     172.16.0.0/16 is variably subnetted, 5 subnets, 3 masks
+S       172.16.10.0/24 [1/0] via 172.16.100.2
+C       172.16.20.0/24 is directly connected, FastEthernet0/1
+L       172.16.20.1/32 is directly connected, FastEthernet0/1
+C       172.16.100.0/30 is directly connected, FastEthernet0/0
+L       172.16.100.1/32 is directly connected, FastEthernet0/0
+S*   0.0.0.0/0 [1/0] via 172.16.100.2
+
+
+
+
+
+-----------------------------------------------------------------------------
+
+			SW_MAINT_A
+-----------------------------------------------------------------------------
+			show running-config
+Building configuration...
+
+Current configuration : 1335 bytes
+!
+version 12.1
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+service password-encryption
+!
+hostname SW_MAINT_A
+!
+!
+!
+clock timezone Yemen 3
+!
+no ip domain-lookup
+!
+!
+!
+spanning-tree mode pvst
+spanning-tree extend system-id
+!
+interface FastEthernet0/1
+!
+interface FastEthernet0/2
+ switchport mode access
+ spanning-tree portfast
+!
+interface FastEthernet0/3
+ switchport mode access
+ spanning-tree portfast
+!
+interface FastEthernet0/4
+!
+interface FastEthernet0/5
+!
+interface FastEthernet0/6
+!
+interface FastEthernet0/7
+!
+interface FastEthernet0/8
+!
+interface FastEthernet0/9
+!
+interface FastEthernet0/10
+!
+interface FastEthernet0/11
+!
+interface FastEthernet0/12
+!
+interface FastEthernet0/13
+!
+interface FastEthernet0/14
+!
+interface FastEthernet0/15
+!
+interface FastEthernet0/16
+!
+interface FastEthernet0/17
+!
+interface FastEthernet0/18
+!
+interface FastEthernet0/19
+!
+interface FastEthernet0/20
+!
+interface FastEthernet0/21
+!
+interface FastEthernet0/22
+!
+interface FastEthernet0/23
+!
+interface FastEthernet0/24
+!
+interface GigabitEthernet0/1
+!
+interface GigabitEthernet0/2
+!
+interface Vlan1
+ ip address 172.16.10.2 255.255.255.0
+!
+ip default-gateway 172.16.10.1
+!
+!
+!
+!
+line con 0
+ password 7 082C4D47071C1116
+ login
+!
+line vty 0 4
+ password 7 082C4D47070F110E13
+ login
+line vty 5 15
+ login
+!
+!
+!
+!
+end
+
+
+SW_MAINT_A#
+SW_MAINT_A#
+SW_MAINT_A#show vlan brief
+
+VLAN Name                             Status    Ports
+---- -------------------------------- --------- -------------------------------
+1    default                          active    Fa0/1, Fa0/2, Fa0/3, Fa0/4
+                                                Fa0/5, Fa0/6, Fa0/7, Fa0/8
+                                                Fa0/9, Fa0/10, Fa0/11, Fa0/12
+                                                Fa0/13, Fa0/14, Fa0/15, Fa0/16
+                                                Fa0/17, Fa0/18, Fa0/19, Fa0/20
+                                                Fa0/21, Fa0/22, Fa0/23, Fa0/24
+                                                Gig0/1, Gig0/2
+1002 fddi-default                     active    
+1003 token-ring-default               active    
+1004 fddinet-default                  active    
+1005 trnet-default                    active    
+SW_MAINT_A#
+SW_MAINT_A#
+SW_MAINT_A#
+SW_MAINT_A#
+SW_MAINT_A#
+SW_MAINT_A#show interfaces status
+Port      Name               Status       Vlan       Duplex  Speed Type
+Fa0/1                        connected    1          auto    auto  10/100BaseTX
+Fa0/2                        connected    1          auto    auto  10/100BaseTX
+Fa0/3                        connected    1          auto    auto  10/100BaseTX
+Fa0/4                        notconnect   1          auto    auto  10/100BaseTX
+Fa0/5                        notconnect   1          auto    auto  10/100BaseTX
+Fa0/6                        notconnect   1          auto    auto  10/100BaseTX
+Fa0/7                        notconnect   1          auto    auto  10/100BaseTX
+Fa0/8                        notconnect   1          auto    auto  10/100BaseTX
+Fa0/9                        notconnect   1          auto    auto  10/100BaseTX
+Fa0/10                       notconnect   1          auto    auto  10/100BaseTX
+Fa0/11                       notconnect   1          auto    auto  10/100BaseTX
+Fa0/12                       notconnect   1          auto    auto  10/100BaseTX
+Fa0/13                       notconnect   1          auto    auto  10/100BaseTX
+Fa0/14                       notconnect   1          auto    auto  10/100BaseTX
+Fa0/15                       notconnect   1          auto    auto  10/100BaseTX
+Fa0/16                       notconnect   1          auto    auto  10/100BaseTX
+Fa0/17                       notconnect   1          auto    auto  10/100BaseTX
+Fa0/18                       notconnect   1          auto    auto  10/100BaseTX
+Fa0/19                       notconnect   1          auto    auto  10/100BaseTX
+Fa0/20                       notconnect   1          auto    auto  10/100BaseTX
+Fa0/21                       notconnect   1          auto    auto  10/100BaseTX
+Fa0/22                       notconnect   1          auto    auto  10/100BaseTX
+Fa0/23                       notconnect   1          auto    auto  10/100BaseTX
+Fa0/24                       notconnect   1          auto    auto  10/100BaseTX
+Gig0/1                       notconnect   1          auto    auto  10/100BaseTX
+Gig0/2                       notconnect   1          auto    auto  10/100BaseTX
+
+
+-----------------------------------------------------------------------------
+
+			SW_MAINT_B#
+-----------------------------------------------------------------------------
+		show running-config
+Building configuration...
+
+Current configuration : 1335 bytes
+!
+version 12.1
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+service password-encryption
+!
+hostname SW_MAINT_B
+!
+!
+!
+clock timezone Yemen 3
+!
+no ip domain-lookup
+!
+!
+!
+spanning-tree mode pvst
+spanning-tree extend system-id
+!
+interface FastEthernet0/1
+!
+interface FastEthernet0/2
+ switchport mode access
+ spanning-tree portfast
+!
+interface FastEthernet0/3
+ switchport mode access
+ spanning-tree portfast
+!
+interface FastEthernet0/4
+!
+interface FastEthernet0/5
+!
+interface FastEthernet0/6
+!
+interface FastEthernet0/7
+!
+interface FastEthernet0/8
+!
+interface FastEthernet0/9
+!
+interface FastEthernet0/10
+!
+interface FastEthernet0/11
+!
+interface FastEthernet0/12
+!
+interface FastEthernet0/13
+!
+interface FastEthernet0/14
+!
+interface FastEthernet0/15
+!
+interface FastEthernet0/16
+!
+interface FastEthernet0/17
+!
+interface FastEthernet0/18
+!
+interface FastEthernet0/19
+!
+interface FastEthernet0/20
+!
+interface FastEthernet0/21
+!
+interface FastEthernet0/22
+!
+interface FastEthernet0/23
+!
+interface FastEthernet0/24
+!
+interface GigabitEthernet0/1
+!
+interface GigabitEthernet0/2
+!
+interface Vlan1
+ ip address 172.16.20.2 255.255.255.0
+!
+ip default-gateway 172.16.20.1
+!
+!
+!
+!
+line con 0
+ password 7 082C4D47071C1115
+ login
+!
+line vty 0 4
+ password 7 082C4D47070F110E10
+ login
+line vty 5 15
+ login
+!
+!
+!
+!
+end
+
+
+SW_MAINT_B#show vlan brief
+
+VLAN Name                             Status    Ports
+---- -------------------------------- --------- -------------------------------
+1    default                          active    Fa0/1, Fa0/2, Fa0/3, Fa0/4
+                                                Fa0/5, Fa0/6, Fa0/7, Fa0/8
+                                                Fa0/9, Fa0/10, Fa0/11, Fa0/12
+                                                Fa0/13, Fa0/14, Fa0/15, Fa0/16
+                                                Fa0/17, Fa0/18, Fa0/19, Fa0/20
+                                                Fa0/21, Fa0/22, Fa0/23, Fa0/24
+                                                Gig0/1, Gig0/2
+1002 fddi-default                     active    
+1003 token-ring-default               active    
+1004 fddinet-default                  active    
+1005 trnet-default                    active    
+SW_MAINT_B#show interfaces status
+Port      Name               Status       Vlan       Duplex  Speed Type
+Fa0/1                        connected    1          auto    auto  10/100BaseTX
+Fa0/2                        connected    1          auto    auto  10/100BaseTX
+Fa0/3                        connected    1          auto    auto  10/100BaseTX
+Fa0/4                        notconnect   1          auto    auto  10/100BaseTX
+Fa0/5                        notconnect   1          auto    auto  10/100BaseTX
+Fa0/6                        notconnect   1          auto    auto  10/100BaseTX
+Fa0/7                        notconnect   1          auto    auto  10/100BaseTX
+Fa0/8                        notconnect   1          auto    auto  10/100BaseTX
+Fa0/9                        notconnect   1          auto    auto  10/100BaseTX
+Fa0/10                       notconnect   1          auto    auto  10/100BaseTX
+Fa0/11                       notconnect   1          auto    auto  10/100BaseTX
+Fa0/12                       notconnect   1          auto    auto  10/100BaseTX
+Fa0/13                       notconnect   1          auto    auto  10/100BaseTX
+Fa0/14                       notconnect   1          auto    auto  10/100BaseTX
+Fa0/15                       notconnect   1          auto    auto  10/100BaseTX
+Fa0/16                       notconnect   1          auto    auto  10/100BaseTX
+Fa0/17                       notconnect   1          auto    auto  10/100BaseTX
+Fa0/18                       notconnect   1          auto    auto  10/100BaseTX
+Fa0/19                       notconnect   1          auto    auto  10/100BaseTX
+Fa0/20                       notconnect   1          auto    auto  10/100BaseTX
+Fa0/21                       notconnect   1          auto    auto  10/100BaseTX
+Fa0/22                       notconnect   1          auto    auto  10/100BaseTX
+Fa0/23                       notconnect   1          auto    auto  10/100BaseTX
+Fa0/24                       notconnect   1          auto    auto  10/100BaseTX
+Gig0/1                       notconnect   1          auto    auto  10/100BaseTX
+Gig0/2                       notconnect   1          auto    auto  10/100BaseTX
+
+
+-----------------------------------------------------------------------------
+			SwitchAdmin#
+
+-----------------------------------------------------------------------------
+		show running-config
+Building configuration...
+
+Current configuration : 2736 bytes
+!
+version 15.0
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+service password-encryption
+!
+hostname SwitchAdmin
+!
+enable secret 5 $1$mERr$m4VdQs5ph6TLebnY5nBQM.
+!
+!
+!
+clock timezone Yemen 3
+!
+ip domain-name www.themepark.com
+!
+username admin privilege 15 password 7 082048430017
+!
+!
+!
+spanning-tree mode pvst
+spanning-tree extend system-id
+!
+interface FastEthernet0/1
+ switchport mode access
+ switchport port-security
+ switchport port-security mac-address sticky 
+ switchport port-security mac-address sticky 0002.167B.4702
+!
+interface FastEthernet0/2
+ switchport mode access
+ switchport port-security
+ switchport port-security mac-address sticky 
+ switchport port-security mac-address sticky 0060.5C15.6B04
+!
+interface FastEthernet0/3
+ switchport mode access
+ switchport port-security
+ switchport port-security mac-address sticky 
+ switchport port-security mac-address sticky 0004.9A19.30D8
+!
+interface FastEthernet0/4
+ switchport mode access
+ switchport port-security
+ switchport port-security mac-address sticky 
+ switchport port-security mac-address sticky 000B.BEBA.A323
+!
+interface FastEthernet0/5
+ switchport mode access
+ switchport port-security
+ switchport port-security mac-address sticky 
+ switchport port-security mac-address sticky 00D0.FF05.44AA
+!
+interface FastEthernet0/6
+ switchport mode access
+ switchport port-security
+ switchport port-security mac-address sticky 
+ switchport port-security mac-address sticky 0002.16AB.9161
+!
+interface FastEthernet0/7
+ switchport mode access
+ switchport port-security
+ switchport port-security mac-address sticky 
+!
+interface FastEthernet0/8
+ switchport mode access
+ switchport port-security
+ switchport port-security mac-address sticky 
+!
+interface FastEthernet0/9
+ switchport mode access
+ switchport port-security
+ switchport port-security mac-address sticky 
+!
+interface FastEthernet0/10
+ switchport mode access
+ switchport port-security
+ switchport port-security mac-address sticky 
+!
+interface FastEthernet0/11
+!
+interface FastEthernet0/12
+!
+interface FastEthernet0/13
+!
+interface FastEthernet0/14
+!
+interface FastEthernet0/15
+!
+interface FastEthernet0/16
+!
+interface FastEthernet0/17
+!
+interface FastEthernet0/18
+!
+interface FastEthernet0/19
+!
+interface FastEthernet0/20
+!
+interface FastEthernet0/21
+!
+interface FastEthernet0/22
+!
+interface FastEthernet0/23
+!
+interface FastEthernet0/24
+!
+interface GigabitEthernet0/1
+!
+interface GigabitEthernet0/2
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+interface Vlan3
+ ip address 192.168.30.2 255.255.255.0
+!
+ip default-gateway 192.168.30.1
+!
+!
+!
+!
+line con 0
+ password 7 082243401A4D
+ login
+!
+line vty 0 4
+ password 7 083758575D
+ login local
+ transport input ssh
+line vty 5 15
+ login
+!
+!
+!
+!
+end
+
+
+SwitchAdmin#show vlan brief
+
+VLAN Name                             Status    Ports
+---- -------------------------------- --------- -------------------------------
+1    default                          active    Fa0/1, Fa0/2, Fa0/3, Fa0/4
+                                                Fa0/5, Fa0/6, Fa0/7, Fa0/8
+                                                Fa0/9, Fa0/10, Fa0/11, Fa0/12
+                                                Fa0/13, Fa0/14, Fa0/15, Fa0/16
+                                                Fa0/17, Fa0/18, Fa0/19, Fa0/20
+                                                Fa0/21, Fa0/22, Fa0/23, Fa0/24
+                                                Gig0/1, Gig0/2
+1002 fddi-default                     active    
+1003 token-ring-default               active    
+1004 fddinet-default                  active    
+1005 trnet-default                    active    
+SwitchAdmin#
+SwitchAdmin#show interfaces status
+Port      Name               Status       Vlan       Duplex  Speed Type
+Fa0/1                        connected    1          auto    auto  10/100BaseTX
+Fa0/2                        connected    1          auto    auto  10/100BaseTX
+Fa0/3                        connected    1          auto    auto  10/100BaseTX
+Fa0/4                        connected    1          auto    auto  10/100BaseTX
+Fa0/5                        connected    1          auto    auto  10/100BaseTX
+Fa0/6                        connected    1          auto    auto  10/100BaseTX
+Fa0/7                        notconnect   1          auto    auto  10/100BaseTX
+Fa0/8                        notconnect   1          auto    auto  10/100BaseTX
+Fa0/9                        notconnect   1          auto    auto  10/100BaseTX
+Fa0/10                       notconnect   1          auto    auto  10/100BaseTX
+Fa0/11                       notconnect   1          auto    auto  10/100BaseTX
+Fa0/12                       notconnect   1          auto    auto  10/100BaseTX
+Fa0/13                       notconnect   1          auto    auto  10/100BaseTX
+Fa0/14                       notconnect   1          auto    auto  10/100BaseTX
+Fa0/15                       notconnect   1          auto    auto  10/100BaseTX
+Fa0/16                       notconnect   1          auto    auto  10/100BaseTX
+Fa0/17                       notconnect   1          auto    auto  10/100BaseTX
+Fa0/18                       notconnect   1          auto    auto  10/100BaseTX
+Fa0/19                       notconnect   1          auto    auto  10/100BaseTX
+Fa0/20                       notconnect   1          auto    auto  10/100BaseTX
+Fa0/21                       notconnect   1          auto    auto  10/100BaseTX
+Fa0/22                       notconnect   1          auto    auto  10/100BaseTX
+Fa0/23                       notconnect   1          auto    auto  10/100BaseTX
+Fa0/24                       notconnect   1          auto    auto  10/100BaseTX
+Gig0/1                       notconnect   1          auto    auto  10/100BaseTX
+Gig0/2                       notconnect   1          auto    auto  10/100BaseTX
+
+SwitchAdmin#
+SwitchAdmin#
+SwitchAdmin#show mac address-table 
+          Mac Address Table
+-------------------------------------------
+
+Vlan    Mac Address       Type        Ports
+----    -----------       --------    -----
+
+   1    0002.167b.4702    STATIC      Fa0/1
+   1    0002.16ab.9161    STATIC      Fa0/6
+   1    0004.9a19.30d8    STATIC      Fa0/3
+   1    000b.beba.a323    STATIC      Fa0/4
+   1    0060.5c15.6b04    STATIC      Fa0/2
+   1    00d0.ff05.44aa    STATIC      Fa0/5
+
+
+
+
+
+
+
+
+-----------------------------------------------------------------------------
+SwitchGames#
+-----------------------------------------------------------------------------
+show running-config
+Building configuration...
+
+Current configuration : 3707 bytes
+!
+version 15.0
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+service password-encryption
+!
+hostname SwitchGames
+!
+enable secret 5 $1$mERr$Vr00GXnmu7WydLTIsiDkN.
+!
+!
+!
+ip domain-name www.themepark.com
+!
+username admin privilege 15 password 7 082048430017
+!
+!
+!
+spanning-tree mode pvst
+spanning-tree extend system-id
+!
+interface FastEthernet0/1
+ switchport mode trunk
+ switchport port-security mac-address sticky 
+!
+interface FastEthernet0/2
+ switchport access vlan 10
+ switchport mode access
+ switchport port-security
+ switchport port-security maximum 10
+ switchport port-security mac-address sticky 
+ switchport port-security violation restrict 
+ switchport port-security mac-address sticky 00E0.A3E4.9134
+!
+interface FastEthernet0/3
+ switchport access vlan 10
+ switchport mode access
+ switchport port-security
+ switchport port-security maximum 10
+ switchport port-security mac-address sticky 
+ switchport port-security violation restrict 
+ switchport port-security mac-address sticky 00D0.9732.C35D
+!
+interface FastEthernet0/4
+ switchport access vlan 10
+ switchport mode access
+ switchport port-security
+ switchport port-security maximum 10
+ switchport port-security mac-address sticky 
+ switchport port-security violation restrict 
+ switchport port-security mac-address sticky 00D0.5870.19E8
+!
+interface FastEthernet0/5
+ switchport access vlan 10
+ switchport mode access
+ switchport port-security
+ switchport port-security maximum 10
+ switchport port-security mac-address sticky 
+ switchport port-security violation restrict 
+!
+interface FastEthernet0/6
+ switchport access vlan 10
+ switchport mode access
+ switchport port-security
+ switchport port-security maximum 10
+ switchport port-security mac-address sticky 
+ switchport port-security violation restrict 
+ switchport port-security mac-address sticky 0002.16C3.2B92
+!
+interface FastEthernet0/7
+ switchport access vlan 10
+ switchport mode access
+ switchport port-security
+ switchport port-security maximum 10
+ switchport port-security mac-address sticky 
+ switchport port-security violation restrict 
+ switchport port-security mac-address sticky 0003.E4A4.2624
+!
+interface FastEthernet0/8
+ switchport access vlan 20
+ switchport mode access
+ switchport port-security
+ switchport port-security maximum 3
+ switchport port-security mac-address sticky 
+ switchport port-security violation restrict 
+ switchport port-security mac-address sticky 0002.4A77.0728
+!
+interface FastEthernet0/9
+ switchport access vlan 20
+ switchport mode access
+ switchport port-security
+ switchport port-security maximum 3
+ switchport port-security mac-address sticky 
+ switchport port-security violation restrict 
+!
+interface FastEthernet0/10
+ switchport access vlan 20
+ switchport mode access
+ switchport port-security
+ switchport port-security maximum 3
+ switchport port-security mac-address sticky 
+ switchport port-security violation restrict 
+!
+interface FastEthernet0/11
+!
+interface FastEthernet0/12
+!
+interface FastEthernet0/13
+!
+interface FastEthernet0/14
+!
+interface FastEthernet0/15
+!
+interface FastEthernet0/16
+!
+interface FastEthernet0/17
+!
+interface FastEthernet0/18
+!
+interface FastEthernet0/19
+!
+interface FastEthernet0/20
+!
+interface FastEthernet0/21
+!
+interface FastEthernet0/22
+!
+interface FastEthernet0/23
+!
+interface FastEthernet0/24
+!
+interface GigabitEthernet0/1
+!
+interface GigabitEthernet0/2
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+interface Vlan10
+ ip address 192.168.10.2 255.255.255.0
+!
+interface Vlan20
+ ip address 192.168.20.2 255.255.255.0
+!
+ip default-gateway 192.168.10.1
+!
+!
+!
+!
+line con 0
+ password 7 082243401A4A
+ login
+!
+line vty 0 4
+ login local
+ transport input ssh
+line vty 5 15
+ login
+!
+!
+!
+!
+end
+
+SwitchGames#show vlan brief
+
+VLAN Name                             Status    Ports
+---- -------------------------------- --------- -------------------------------
+1    default                          active    Fa0/11, Fa0/12, Fa0/13, Fa0/14
+                                                Fa0/15, Fa0/16, Fa0/17, Fa0/18
+                                                Fa0/19, Fa0/20, Fa0/21, Fa0/22
+                                                Fa0/23, Fa0/24, Gig0/1, Gig0/2
+10   ticket                           active    Fa0/2, Fa0/3, Fa0/4, Fa0/5
+                                                Fa0/6, Fa0/7
+20   control                          active    Fa0/8, Fa0/9, Fa0/10
+1002 fddi-default                     active    
+1003 token-ring-default               active    
+1004 fddinet-default                  active    
+1005 trnet-default                    active    
+SwitchGames#
+SwitchGames#show interfaces status
+Port      Name               Status       Vlan       Duplex  Speed Type
+Fa0/1                        connected    trunk      auto    auto  10/100BaseTX
+Fa0/2                        connected    10         auto    auto  10/100BaseTX
+Fa0/3                        connected    10         auto    auto  10/100BaseTX
+Fa0/4                        connected    10         auto    auto  10/100BaseTX
+Fa0/5                        connected    10         auto    auto  10/100BaseTX
+Fa0/6                        connected    10         auto    auto  10/100BaseTX
+Fa0/7                        connected    10         auto    auto  10/100BaseTX
+Fa0/8                        connected    20         auto    auto  10/100BaseTX
+Fa0/9                        notconnect   20         auto    auto  10/100BaseTX
+Fa0/10                       notconnect   20         auto    auto  10/100BaseTX
+Fa0/11                       notconnect   1          auto    auto  10/100BaseTX
+Fa0/12                       notconnect   1          auto    auto  10/100BaseTX
+Fa0/13                       notconnect   1          auto    auto  10/100BaseTX
+Fa0/14                       notconnect   1          auto    auto  10/100BaseTX
+Fa0/15                       notconnect   1          auto    auto  10/100BaseTX
+Fa0/16                       notconnect   1          auto    auto  10/100BaseTX
+Fa0/17                       notconnect   1          auto    auto  10/100BaseTX
+Fa0/18                       notconnect   1          auto    auto  10/100BaseTX
+Fa0/19                       notconnect   1          auto    auto  10/100BaseTX
+Fa0/20                       notconnect   1          auto    auto  10/100BaseTX
+Fa0/21                       notconnect   1          auto    auto  10/100BaseTX
+Fa0/22                       notconnect   1          auto    auto  10/100BaseTX
+Fa0/23                       notconnect   1          auto    auto  10/100BaseTX
+Fa0/24                       notconnect   1          auto    auto  10/100BaseTX
+Gig0/1                       notconnect   1          auto    auto  10/100BaseTX
+Gig0/2                       notconnect   1          auto    auto  10/100BaseTX
+
+SwitchGames#
+SwitchGames#
+SwitchGames#
+SwitchGames#show mac address-table 
+          Mac Address Table
+-------------------------------------------
+
+Vlan    Mac Address       Type        Ports
+----    -----------       --------    -----
+
+  10    0002.16c3.2b92    STATIC      Fa0/6
+  10    0002.4a0a.ae02    DYNAMIC     Fa0/1
+  10    0003.e4a4.2624    STATIC      Fa0/7
+  10    00d0.5870.19e8    STATIC      Fa0/4
+  10    00d0.9732.c35d    STATIC      Fa0/3
+  10    00e0.a3e4.9134    STATIC      Fa0/2
+  20    0002.4a0a.ae02    DYNAMIC     Fa0/1
+  20    0002.4a77.0728    STATIC      Fa0/8

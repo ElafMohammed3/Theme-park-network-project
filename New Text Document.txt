@@ -185,6 +185,18 @@ RouterGames(config)#interface FastEthernet0/1.10
 RouterGames(config-subif)#ip access-group tickets in
 RouterGames(config-subif)#interface FastEthernet0/1.20
 RouterGames(config-subif)#ip access-group CONTROL in
+RouterGames(config)#no ip access-list extended tickets
+RouterGames(config)#ip access-list extended tickets
+RouterGames(config-ext-nacl)#permit udp 192.168.10.0 0.0.0.255 host 192.168.30.10 eq 53
+RouterGames(config-ext-nacl)#permit udp 192.168.10.0 0.0.0.255 host 192.168.30.10 eq 53
+RouterGames(config-ext-nacl)#permit tcp 192.168.10.0 0.0.0.255 host 192.168.30.10 eq 80
+RouterGames(config-ext-nacl)#permit tcp 192.168.10.0 0.0.0.255 host 192.168.30.10 eq 443
+RouterGames(config-ext-nacl)#permit icmp 192.168.10.0 0.0.0.255 192.168.30.0 0.0.0.255
+RouterGames(config-ext-nacl)#deny ip 192.168.10.0 0.0.0.255 192.168.30.0 0.0.0.255
+RouterGames(config-ext-nacl)#permit ip any any
+RouterGames(config-ext-nacl)#exit
+RouterGames(config)#interface FastEthernet0/1.10
+RouterGames(config-subif)#ip access-group tickets in
 RouterGames(config-subif)#exit
 RouterGames(config-ext-nacl)#exit
 RouterGames(config)#interface f0/1.10
@@ -1207,7 +1219,7 @@ Reply from 172.16.20.1: Destination host unreachable.
 
 ===========================================================
                Ping between R_MAINT_B and VLAN 10:
-               
+
 Ping statistics for 192.168.20.10:
     Packets: Sent = 4, Received = 0, Lost = 4 (100% loss),
 
