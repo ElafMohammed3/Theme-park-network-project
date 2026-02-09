@@ -1,0 +1,1435 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dreamland NOC System</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Montserrat:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --primary: #000c1e; /* Dark Blue */
+        --secondary: #1a2a40; /* Slightly Lighter Dark Blue */
+        /* --neon-blue: #00f2ffaf;
+            --neon-pink: #ff0080c8; */
+        /* --neon-blue: #a2d2ff; 
+        --neon-pink: #bde0fe;  */
+
+        /* --neon-blue: #e0e1dd; 
+        --neon-pink: #778da9;  */
+        --neon-blue: #84a59d;
+        --neon-pink: #f5cac3;
+        --text-light: #e0e0e0;
+        --glass-bg: rgba(255, 255, 255, 0.05);
+        --border-neon: 1px solid rgba(0, 242, 255, 0.3);
+        --shadow-neon: 0 0 15px rgba(0, 242, 255, 0.2);
+      }
+
+      body {
+        font-family: "Cairo", sans-serif;
+        margin: 0;
+        background: linear-gradient(
+          135deg,
+          #000c1e,
+          #1a001a
+        ); /* Dark gradient background */
+        color: var(--text-light);
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        overflow-x: hidden;
+        position: relative;
+      }
+
+      /* Background animation - Optional but cool */
+      body::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url("merged_night_park.png") repeat; /* A subtle pattern or stars */
+        opacity: 0.1;
+        animation: bg-scroll 60s linear infinite;
+      }
+      @keyframes bg-scroll {
+        from {
+          background-position: 0 0;
+        }
+        to {
+          background-position: 100% 100%;
+        }
+      }
+
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 30px;
+        background: rgba(0, 0, 0, 0.6); /* Semi-transparent dark navbar */
+        border-bottom: var(--border-neon);
+        box-shadow: var(--shadow-neon);
+        z-index: 1000;
+      }
+
+      .logo-text {
+        font-family: "Montserrat", sans-serif;
+        font-size: 28px;
+        font-weight: 700;
+        color: var(--neon-blue);
+        text-shadow: 0 0 10px var(--neon-blue);
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 25px;
+      }
+
+      .nav-item {
+        cursor: pointer;
+        text-transform: uppercase;
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--text-light);
+        padding: 8px 15px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .nav-item::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(0, 242, 255, 0.3),
+          transparent
+        );
+        transition: 0.5s;
+      }
+
+      .nav-item:hover::before {
+        left: 100%;
+      }
+
+      .nav-item:hover {
+        color: var(--neon-blue);
+        text-shadow: 0 0 8px var(--neon-blue);
+      }
+
+      .nav-item.active {
+        color: var(--neon-pink);
+        background: var(--glass-bg);
+        border: 1px solid var(--neon-pink);
+        text-shadow: 0 0 10px var(--neon-pink);
+        box-shadow: 0 0 15px rgba(255, 0, 127, 0.5);
+      }
+
+      .status-indicator {
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        background-color: #0f0;
+        border-radius: 50%;
+        margin-left: 10px;
+        box-shadow: 0 0 8px #0f0;
+        animation: pulse-status 1.5s infinite alternate;
+      }
+
+      @keyframes pulse-status {
+        from {
+          box-shadow: 0 0 5px #0f0;
+        }
+        to {
+          box-shadow: 0 0 15px #0f0;
+        }
+      }
+
+      /* ================================================= */
+      /* Home Page Specific Styles */
+      .home-container {
+        flex-grow: 1; /* Make it take available vertical space */
+        display: flex;
+        align-items: center; /* Center vertically */
+        justify-content: center; /* Center horizontally */
+        padding: 20px;
+        text-align: center;
+      }
+
+      .home-content-box {
+        background: rgba(0, 0, 0, 0.5); /* Darker glass effect */
+        border: 1px solid rgba(0, 242, 255, 0.3);
+        border-radius: 15px;
+        padding: 40px 60px;
+        box-shadow:
+          0 0 25px rgba(0, 242, 255, 0.2),
+          0 0 40px rgba(255, 0, 127, 0.1);
+        max-width: 800px; /* Constrain width */
+        text-align: center;
+        animation: fadeIn 1.5s ease-out;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .project-main-title {
+        font-family: "Montserrat", sans-serif;
+        font-size: 4.5vw; /* Responsive font size */
+        /* color: var(--neon-blue);
+        text-shadow: 0 0 15px var(--neon-blue); */
+        /* color: #a2d2ff;
+        text-shadow: 0 0 10px rgba(162, 210, 255, 0.5);  */
+        /* color: #e0e1dd;
+        text-shadow: 0 0 8px rgba(224, 225, 221, 0.4); */
+        color: #f2f2f2;
+        text-shadow: 0 0 12px #84a59d4d;
+        margin-bottom: 5px;
+        line-height: 1.1; /* Adjust line height for large text */
+        animation: glow 2s infinite alternate;
+      }
+
+      @keyframes glow {
+        from {
+          text-shadow:
+            0 0 10px var(--neon-blue),
+            0 0 20px var(--neon-blue);
+        }
+        to {
+          text-shadow:
+            0 0 15px var(--neon-blue),
+            0 0 25px var(--neon-blue);
+        }
+      }
+
+      .project-subtitle-text {
+        font-family: "Cairo", sans-serif;
+        font-size: 1.5vw; /* Responsive font size */
+        color: var(--text-light);
+        opacity: 0.8;
+        margin-bottom: 30px; /* Space below subtitle */
+      }
+
+      .member-details p {
+        font-family: "Cairo", sans-serif;
+        font-size: 1.8vw; /* Responsive font size */
+        color: #fff; /* Pure white for clarity */
+        margin: 10px 0; /* Spacing between lines */
+        line-height: 1.5;
+        opacity: 0.9;
+      }
+
+      /* Responsive adjustments */
+      @media (max-width: 768px) {
+        .project-main-title {
+          font-size: 8vw;
+        }
+        .project-subtitle-text,
+        .member-details p {
+          font-size: 3vw;
+        }
+        .navbar {
+          flex-direction: column;
+          gap: 10px;
+        }
+        .nav-links {
+          gap: 15px;
+        }
+      }
+
+      /* ================================================= */
+      /* General content display styles */
+      .content-area {
+        flex-grow: 1;
+        padding: 20px;
+        display: flex;
+        justify-content: center; /* Center content horizontally */
+        align-items: flex-start; /* Align content to the top initially */
+        z-index: 1;
+        position: relative;
+      }
+
+      .glass-card {
+        background: var(--glass-bg);
+        border: var(--border-neon);
+        border-radius: 15px;
+        padding: 25px;
+        margin-bottom: 20px;
+        box-shadow: var(--shadow-neon);
+        backdrop-filter: blur(8px); /* Glass effect */
+      }
+
+      /* Override content-area alignment for home page specifically */
+      .content-area.home-active {
+        align-items: center; /* Center vertically ONLY when home is active */
+      }
+      /* تنسيقات صفحة Overview */
+      /* حاوية الصورة لتسمح بوضع الأزرار فوقها */
+      .map-interactive-container {
+        position: relative;
+        display: inline-block;
+        width: 100%;
+      }
+
+      /* تنسيق الزر العائم */
+      .map-label {
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        z-index: 10;
+        transition: all 0.3s ease;
+      }
+
+      .label-text {
+        background: rgba(15, 15, 18, 0.85); /* خلفية داكنة متناسقة */
+        border: 1px solid var(--border-gold);
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        color: white;
+        white-space: nowrap;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(5px);
+      }
+
+      /* تأثير النقطة النابضة */
+      .pulse-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        position: relative;
+      }
+
+      .pulse-dot.admin {
+        background: var(--neon-blue);
+      } /* ذهبي */
+      .pulse-dot.games {
+        background: var(--neon-pink);
+      } /* خزامي */
+      .pulse-dot.maint {
+        background: #64ffda;
+      }
+
+      .pulse-dot::after {
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        background: inherit;
+        border-radius: 50%;
+        animation: pulse-ring 1.5s cubic-bezier(0.455, 0.03, 0.515, 0.955)
+          infinite;
+      }
+
+      @keyframes pulse-ring {
+        0% {
+          transform: scale(0.33);
+          opacity: 1;
+        }
+        80%,
+        100% {
+          transform: scale(3);
+          opacity: 0;
+        }
+      }
+
+      /* تفاعل عند تمرير الماوس */
+      .map-label:hover {
+        transform: scale(1.1);
+      }
+
+      .map-label:hover .label-text {
+        border-color: white;
+        box-shadow: 0 0 15px var(--neon-blue);
+      }
+      .overview-grid {
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr; /* الخريطة تأخذ مساحة أكبر */
+        gap: 25px;
+        margin-top: 30px;
+      }
+
+      .section-title {
+        color: var(--neon-blue); /* الذهبي */
+        font-size: 1.4rem;
+        margin-bottom: 20px;
+        border-bottom: 1px solid var(--border-gold);
+        padding-bottom: 10px;
+      }
+
+      .map-wrapper {
+        background: rgba(255, 255, 255, 0.02);
+        border-radius: 15px;
+        padding: 15px;
+        text-align: center;
+      }
+
+      .overview-img {
+        width: 100%;
+        height: auto;
+        filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.2));
+      }
+
+      .legend-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-top: 20px;
+      }
+
+      .legend-item {
+        font-size: 0.9rem;
+        color: var(--text-light);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+      }
+      .admin {
+        background: #d4af37;
+      } /* ذهبي */
+      .games {
+        background: #967bb6;
+      } /* خزامي */
+      .maint {
+        background: #64ffda;
+      } /* لون إضافي هادئ */
+
+      .chart-container {
+        height: 300px;
+        position: relative;
+      }
+
+      .tech-note {
+        background: rgba(150, 123, 182, 0.1); /* خلفية خزامية شفافة جداً */
+        padding: 15px;
+        border-radius: 10px;
+        margin-top: 15px;
+        border-right: 4px solid var(--neon-pink);
+        font-size: 0.85rem;
+      }
+      /* تنسيقات صفحة المخطط الهندسي */
+      .topology-container {
+        padding: 10px;
+        border: 1px solid var(--border-gold);
+        overflow: hidden;
+        position: relative;
+        background: rgba(0, 0, 0, 0.4);
+      }
+
+      .topology-img {
+        width: 100%;
+        height: auto;
+        filter: brightness(0.8) contrast(1.2); /* تجعل الصورة تبدو أكثر سينمائية */
+        border-radius: 10px;
+      }
+
+      .topo-label {
+        position: absolute;
+        z-index: 20;
+        cursor: pointer;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+
+      .label-box {
+        background: rgba(26, 26, 32, 0.8);
+        backdrop-filter: blur(10px);
+        border: 1px solid var(--border-gold);
+        padding: 10px 18px;
+        border-radius: 12px;
+        color: white;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      }
+
+      .label-box b {
+        color: var(--neon-blue); /* الذهبي */
+        font-size: 1rem;
+        display: block;
+      }
+
+      .label-box small {
+        color: var(--neon-pink); /* الخزامي */
+        font-size: 0.75rem;
+        margin-top: 2px;
+      }
+
+      /* نمط خاص بـ ISP Core */
+      .isp-style {
+        border-color: #64ffda;
+        background: rgba(100, 255, 218, 0.1);
+      }
+
+      .isp-style b {
+        color: #64ffda;
+      }
+
+      /* نقطة الحالة */
+      .status-dot {
+        width: 8px;
+        height: 8px;
+        background: #0f0;
+        border-radius: 50%;
+        margin-bottom: 5px;
+        box-shadow: 0 0 8px #0f0;
+      }
+
+      .blink {
+        animation: blinker 1s linear infinite;
+      }
+      @keyframes blinker {
+        50% {
+          opacity: 0;
+        }
+      }
+
+      .topo-label:hover {
+        transform: scale(1.1) translateY(-5px);
+        z-index: 30;
+      }
+      .topology-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+        padding-bottom: 50px;
+      }
+
+      .topology-section {
+        position: relative;
+        border: 1px solid var(--border-gold);
+        background: rgba(0, 0, 0, 0.3);
+        padding: 20px;
+        border-radius: 20px;
+      }
+
+      .topology-img {
+        width: 100%;
+        height: auto;
+        border-radius: 10px;
+        opacity: 0.9;
+        transition: opacity 0.3s;
+      }
+
+      .topology-img:hover {
+        opacity: 1;
+      }
+
+      /* تعديلات الأزرار لتكون أصغر وأكثر دقة */
+      .label-box {
+        padding: 8px 12px;
+        font-size: 0.85rem;
+        min-width: 150px;
+      }
+
+      .status-dot.blink {
+        background: #00f2ff;
+        box-shadow: 0 0 10px #00f2ff;
+      }
+      /* تنسيق الجداول الذهبية */
+      .addressing-container {
+        display: flex;
+        flex-direction: column;
+        gap: 40px;
+        padding: 20px;
+      }
+
+      .table-section {
+        animation: slideUp 0.8s ease-out;
+      }
+
+      .table-title {
+        color: var(--neon-pink); /* خزامي */
+        font-size: 1.2rem;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .gold-table {
+        width: 100%;
+        border-collapse: collapse;
+        background: rgba(255, 255, 255, 0.02);
+        border-radius: 10px;
+        overflow: hidden;
+        color: #e0e0e0;
+      }
+
+      .gold-table th {
+        background: rgba(212, 175, 55, 0.15); /* ذهبي خفيف */
+        color: var(--neon-blue); /* ذهبي مطفي */
+        padding: 15px;
+        text-align: left;
+        border-bottom: 2px solid var(--border-gold);
+        font-family: "Montserrat", sans-serif;
+        text-transform: uppercase;
+        font-size: 0.85rem;
+      }
+
+      .gold-table td {
+        padding: 12px 15px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        font-size: 0.9rem;
+      }
+
+      .gold-table tbody tr:hover {
+        background: rgba(150, 123, 182, 0.05); /* توهج خزامي عند التمرير */
+        transition: 0.3s;
+      }
+
+      .gold-table td:first-child {
+        font-weight: bold;
+        color: #fff;
+      }
+
+      @keyframes slideUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .config-detailed-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+        gap: 25px;
+        padding-bottom: 40px;
+      }
+
+      .config-block {
+        border-right: 4px solid var(--neon-blue); /* خط ذهبي جانبي */
+        display: flex;
+        flex-direction: column;
+      }
+
+      .config-h {
+        color: var(--neon-blue);
+        font-size: 1.15rem;
+        margin-bottom: 12px;
+        border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+        padding-bottom: 8px;
+      }
+
+      .tech-desc {
+        font-size: 0.9rem;
+        color: #b0b0b0;
+        margin-bottom: 15px;
+        line-height: 1.5;
+      }
+
+      .code-window {
+        background: #050505;
+        color: #e0e0e0;
+        padding: 18px;
+        border-radius: 12px;
+        font-family: "Fira Code", "Courier New", monospace;
+        font-size: 0.82rem;
+        position: relative;
+        border: 1px solid #1a1a1a;
+        box-shadow: inset 0 0 10px rgba(0, 0, 0, 1);
+        direction: ltr;
+      }
+
+      .comment {
+        color: #6a9955;
+        font-style: italic;
+      }
+      .highlight-cmd {
+        color: var(--neon-pink);
+        font-weight: bold;
+      }
+
+      .code-window::after {
+        content: "Cisco IOS";
+        position: absolute;
+        top: 5px;
+        right: 15px;
+        font-size: 0.6rem;
+        color: #444;
+      }
+      /* التنسيق المعدل للصور داخل الكروت */
+      .image-wrapper {
+        width: 100%;
+        height: 200px; /* تحديد ارتفاع ثابت لمنطقة الصورة */
+        overflow: hidden; /* إخفاء أي جزء خارج الإطار */
+        border: 1px solid rgba(0, 243, 255, 0.2);
+        border-radius: 8px;
+        margin: 10px 0;
+        background: #000;
+      }
+
+      .dashboard-img,
+      .sub-img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain; /* تجعل الصورة تظهر كاملة داخل الإطار دون تمطيط أو تغطية النص */
+        display: block;
+      }
+
+      /* لتنسيق الكروت بحيث لا يتداخل النص مع الصور */
+      .service-sub-card {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 15px;
+        min-height: 320px; /* ضمان مساحة كافية للنص والصورة معاً */
+      }
+
+      .service-p,
+      .img-note {
+        font-size: 0.85rem;
+        line-height: 1.4;
+        margin-bottom: 10px;
+        z-index: 2; /* لضمان بقاء الخط فوق أي خلفية */
+      }
+
+      /* تحسين صور الإثبات النهائي */
+      .final-proof-img {
+        max-width: 100%;
+        max-height: 150px;
+        object-fit: cover;
+        border-radius: 4px;
+      }
+      .result-item {
+        display: flex;
+        align-items: center;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 10px;
+        background: rgba(255, 255, 255, 0.03);
+      }
+      .result-item.success {
+        border-left: 5px solid #84a59d4d;
+      }
+      .result-item.blocked {
+        border-left: 5px solid #84a59d4d;
+      }
+      .status-icon {
+        font-size: 1.5rem;
+        margin-right: 15px;
+      }
+      .result-info strong {
+        display: block;
+        color: var(--neon-blue);
+      }
+      .terminal-logs {
+        max-height: 200px;
+        overflow-y: auto;
+        font-size: 0.8rem;
+      }
+      .conclusion-layout {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 20px;
+      }
+
+      .achievement-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+        margin-top: 25px;
+      }
+
+      .achieve-item {
+        background: rgba(255, 255, 255, 0.03);
+        padding: 15px;
+        border-radius: 10px;
+        border: 1px solid rgba(0, 243, 255, 0.1);
+        text-align: center;
+      }
+
+      .achieve-icon {
+        font-size: 2rem;
+        margin-bottom: 10px;
+        display: block;
+      }
+      .achieve-item h4 {
+        color: var(--neon-blue);
+        font-size: 0.9rem;
+        margin-bottom: 5px;
+      }
+      .achieve-item p {
+        font-size: 0.75rem;
+        color: #aaa;
+      }
+
+      .status-list {
+        list-style: none;
+        padding: 0;
+        margin-top: 15px;
+      }
+      .status-list li {
+        font-size: 0.85rem;
+        padding: 8px 0;
+        border-bottom: 1px solid #222;
+        color: #ddd;
+      }
+
+      .pulse-green {
+        height: 12px;
+        width: 12px;
+        background-color: #00ff00;
+        border-radius: 50%;
+        display: inline-block;
+        box-shadow: 0 0 10px #00ff00;
+        margin-right: 10px;
+      }
+
+      .final-quote {
+        text-align: center;
+        margin-top: 40px;
+        font-size: 1.1rem;
+        color: var(--border-gold);
+        font-style: italic;
+        border-top: 1px solid #333;
+        padding-top: 20px;
+      }
+      .pulse-green {
+        width: 12px;
+        height: 12px;
+        background: #0f0;
+        border-radius: 50%;
+        box-shadow: 0 0 10px #0f0;
+        animation: pulse 1.5s infinite;
+      }
+      @keyframes pulse {
+        0% {
+          transform: scale(0.9);
+          opacity: 0.7;
+        }
+        50% {
+          transform: scale(1.2);
+          opacity: 1;
+        }
+        100% {
+          transform: scale(0.9);
+          opacity: 0.7;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="logo-text">Dreamland Therme Park</div>
+      <div class="nav-links">
+        <div class="nav-item active" onclick="loadContent('home')">home</div>
+        <div class="nav-item" onclick="loadContent('overview')">overview</div>
+        <div class="nav-item" onclick="loadContent('topology')">topology</div>
+        <div class="nav-item" onclick="loadContent('addressing')">
+          addressing
+        </div>
+        <div class="nav-item" onclick="loadContent('config')">config</div>
+        <div class="nav-item" onclick="loadContent('services')">
+          Advanced Network Services
+        </div>
+        <div class="nav-item" onclick="loadContent('testing')">testing</div>
+        <div class="nav-item" onclick="loadContent('conclusion')">
+          conclusion
+        </div>
+      </div>
+      <div style="font-size: 14px">
+        <span class="status-indicator"></span> Network Online
+      </div>
+    </nav>
+
+    <div id="content-area" class="content-area home-active">
+      <div id="content-display"></div>
+    </div>
+
+    <script>
+      const content = {
+        home: `
+                <div class="home-content-box">
+                    <h1 class="project-main-title">Dreamland Theme Park</h1>
+                    <p class="project-subtitle-text">تقرير المشروع</p>
+                    <div style="margin-top: 30px;"></div> <div class="member-details">
+                        <p>اسم الطالبة: العصماء حلاق.</p>
+                        <p>اسم الطالبة: إيلاف الحليلي.</p>
+                        <p>اسم المشرف: المهندس/أنور.</p>
+                    </div>
+                </div>
+            `,
+        overview: `
+    <div class="page-header">
+        <h2 class="page-main-title">نظرة عامة على البنية التحتية</h2>
+        <p class="page-subtitle">تحليل الربط المنطقي وتوزيع الأحمال لشبكة Dreamland</p>
+    </div>
+
+    <div class="overview-grid">
+        <div class="glass-card map-section">
+            <h3 class="section-title">المخطط المنطقي للمناطق</h3>
+            
+            <div class="map-interactive-container">
+                <img src="Adobe Express - file.png" class="overview-img">
+
+                <div class="map-label admin-btn" style="top: 20%; left: 15%;">
+                    <span class="pulse-dot admin"></span>
+                    <div class="label-text"><b>الإدارة:</b> تخزين FTP/NTP</div>
+                </div>
+
+                <div class="map-label games-btn" style="top: 28%; left: 37%;">
+                    <span class="pulse-dot games"></span>
+                    <div class="label-text"><b>الألعاب:</b> عزل VLANs</div>
+                </div>
+
+                <div class="map-label maint-btn" style="top: 35%; left: 75%;">
+                    <span class="pulse-dot maint"></span>
+                    <div class="label-text"><b>الصيانة:</b> تحكم Static</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="glass-card chart-section">
+            <h3 class="section-title">توزيع حركة البيانات</h3>
+            <div class="chart-container">
+                <canvas id="trafficChart"></canvas>
+            </div>
+        </div>
+    </div>
+`,
+        topology: `
+    <div class="page-header">
+        <h2 class="page-main-title">Network Topology</h2>
+        <p class="page-subtitle">الهيكلية الفيزيائية وتوزيع الأنظمة التقنية</p>
+    </div>
+
+    <div class="topology-grid">
+        <div class="glass-card topology-section">
+            <h3 class="section-title">Main Site: Admin & Games</h3>
+            <div class="map-interactive-container">
+                <img src="Topology1.png" class="topology-img"> <div class="topo-label admin-pos" style="top: 10%; left: 20%;">
+                    <div class="label-box">
+                        <span class="status-dot"></span>
+                        <b>Admin Building</b>
+                        <small>IP: 192.168.30.0/24</small>
+                    </div>
+                </div>
+
+                <div class="topo-label games-pos" style="top: 15%; left: 70%;">
+                    <div class="label-box">
+                        <span class="status-dot"></span>
+                        <b>Games Area (VLAN 10/20)</b>
+                        <small>Ticket Booths & Control</small>
+                    </div>
+                </div>
+
+                <div class="topo-label isp-pos" style="top: 3%; left: 45%;">
+                    <div class="label-box isp-style">
+                        <span class="status-dot blink"></span>
+                        <b>VPN / ISP Core</b>
+                        <small>Static/RIP Routing</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="glass-card topology-section">
+            <h3 class="section-title">Remote Site: Maintenance Network</h3>
+            <div class="map-interactive-container">
+                <img src="Topology2.png" class="topology-img"> <div class="topo-label maint-pos" style="top: 10%; left: 45%;">
+                    <div class="label-box">
+                        <span class="status-dot"></span>
+                        <b>Maintenance Zone</b>
+                        <small>Static Routing: 172.16.x.x</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+`,
+        addressing: `
+    <div class="page-header">
+        <h2 class="page-main-title">IP Addressing Table</h2>
+        <p class="page-subtitle">توزيع العناوين والشبكات الفرعية (Subnetting Scheme)</p>
+    </div>
+
+    <div class="addressing-container">
+        <div class="glass-card table-section">
+            <h3 class="table-title"><span class="dot admin"></span> Admin & Services Zone (192.168.30.0)</h3>
+            <div class="table-responsive">
+                <table class="gold-table">
+                    <thead>
+                        <tr>
+                            <th>Device</th>
+                            <th>Interface</th>
+                            <th>IP Address</th>
+                            <th>Subnet Mask</th>
+                            <th>Default Gateway</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>RouterAdmin</td><td>Fa0/1</td><td>192.168.30.1</td><td>255.255.255.0</td><td>N/A</td></tr>
+                        <tr><td>Server-0</td><td>Fa0</td><td>192.168.30.10</td><td>255.255.255.0</td><td>192.168.30.1</td></tr>
+                        <tr><td>Office-1 (DHCP)</td><td>Fa0</td><td>192.168.10.20-255</td><td>255.255.255.0</td><td>192.168.30.1</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="glass-card table-section">
+            <h3 class="table-title"><span class="dot games"></span> Games & Tickets Zone (VLANs)</h3>
+            <div class="table-responsive">
+                <table class="gold-table">
+                    <thead>
+                        <tr>
+                            <th>Device</th>
+                            <th>Interface</th>
+                            <th>IP Address</th>
+                            <th>Subnet Mask</th>
+                            <th>Default Gateway</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>RouterGames</td><td>Fa0/1.10</td><td>192.168.10.1</td><td>255.255.255.0</td><td>N/A</td></tr>
+                        <tr><td>RouterGames</td><td>Fa0/1.20</td><td>192.168.20.1</td><td>255.255.255.0</td><td>N/A</td></tr>
+                        <tr><td>Ticket Booth 1</td><td>Fa0</td><td>192.168.10.13</td><td>255.255.255.0</td><td>192.168.10.1</td></tr>
+                        <tr><td>Control Office</td><td>Fa0</td><td>192.168.20.10</td><td>255.255.255.0</td><td>192.168.20.1</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="glass-card table-section">
+            <h3 class="table-title"><span class="dot maint"></span> Maintenance Network (172.16.x.x)</h3>
+            <div class="table-responsive">
+                <table class="gold-table">
+                    <thead>
+                        <tr>
+                            <th>Device</th>
+                            <th>Interface</th>
+                            <th>IP Address</th>
+                            <th>Subnet Mask</th>
+                            <th>Default Gateway</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>R_MAINT_A</td><td>Gig0/1</td><td>172.16.10.1</td><td>255.255.255.0</td><td>N/A</td></tr>
+                        <tr><td>R_MAINT_B</td><td>Fa0/1</td><td>172.16.20.1</td><td>255.255.255.0</td><td>N/A</td></tr>
+                        <tr><td>PC_MAINT_1</td><td>Fa0</td><td>172.16.10.10</td><td>255.255.255.0</td><td>172.16.10.1</td></tr>
+                        <tr><td>PC_CONTROL_1</td><td>Fa0</td><td>172.16.20.10</td><td>255.255.255.0</td><td>172.16.20.1</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+`,
+        config: `
+    <div class="page-header">
+        <h2 class="page-main-title">Comprehensive Configuration Manual</h2>
+        <p class="page-subtitle">التوثيق البرمجي الكامل لبروتوكولات التوجيه والحماية لشبكة Dreamland</p>
+    </div>
+
+    <div class="config-detailed-grid">
+        <div class="glass-card config-block">
+            <h3 class="config-h"><i class="icon-key"></i> 01. Infrastructure & AAA Management</h3>
+            <div class="tech-desc">
+                تم تفعيل نظام <b>AAA</b> لضمان أن الدخول للراوترات لا يتم إلا عبر حسابات معرفة، مع تشفير RSA بطول <b>1024-bit</b> لتأمين اتصال الـ SSH.
+            </div>
+            <div class="code-window">
+                <span class="comment">! تفعيل التشفير والوصول الآمن</span><br>
+                crypto key generate rsa (1024)<br>
+                ip ssh version 2<br>
+                aaa new-model<br>
+                username admin_boss privilege 15 secret admin1
+            </div>
+        </div>
+
+        <div class="glass-card config-block">
+            <h3 class="config-h"><i class="icon-share"></i> 02. Hybrid Routing Strategy</h3>
+            <div class="tech-desc">
+                استخدمنا <b>RIPv2</b> للربط الديناميكي، مع تقنية <b>Redistribution</b> لدمج المسارات الثابتة (Static) القادمة من شبكة الصيانة داخل جدول التوجيه العام.
+            </div>
+            <div class="code-window">
+                <span class="comment">! دمج المسارات الثابتة مع RIP</span><br>
+                router rip<br>
+                version 2 | no auto-summary<br>
+                network 192.168.10.0<br>
+                redistribute static <span class="highlight-cmd">! Injecting Static routes into RIP process</span>
+            </div>
+        </div>
+
+        <div class="glass-card config-block">
+            <h3 class="config-h"><i class="icon-layers"></i> 03. VLAN Segmentation (Router on a Stick)</h3>
+            <div class="tech-desc">
+                تم تقسيم شبكة الألعاب إلى <b>VLAN 10</b> للتذاكر و <b>VLAN 20</b> للتحكم، وتم الربط بينهما عبر الـ Sub-interfaces في الراوتر.
+            </div>
+            <div class="code-window">
+                <span class="comment">! إعداد الـ Sub-interfaces</span><br>
+                interface fa0/1.10<br>
+                encapsulation dot1Q 10<br>
+                ip address 192.168.10.1 255.255.255.0
+            </div>
+        </div>
+
+        <div class="glass-card config-block">
+            <h3 class="config-h"><i class="icon-shield"></i> 04. Advanced Access Control (ACL)</h3>
+            <div class="tech-desc">
+                استخدمنا الـ <b>Extended ACL</b> ليس فقط للمنع، بل لتخصيص الوصول. (مثال: السماح للصيانة بالوصول للتحكم ومنعهم من السيرفر).
+            </div>
+            <div class="code-window">
+                ip access-list extended CONTROL<br>
+                permit ip 192.168.20.0 0.0.0.255 172.16.0.0 0.0.255.255<br>
+                deny ip 192.168.20.0 0.0.0.255 192.168.30.0 0.0.0.255
+            </div>
+        </div>
+
+        <div class="glass-card config-block">
+            <h3 class="config-h"><i class="icon-cpu"></i> 05. Layer 2 Security (Port-Security)</h3>
+            <div class="tech-desc">
+                لحماية المنافذ من هجمات الـ MAC Flooding، تم قفل المنافذ على أجهزة معينة (Sticky) وتفعيل خاصية الـ <b>Shutdown</b> الفوري عند المخالفة.
+            </div>
+            <div class="code-window">
+                switchport mode access<br>
+                switchport port-security<br>
+                switchport port-security mac-address sticky<br>
+                switchport port-security violation shutdown
+            </div>
+        </div>
+
+        <div class="glass-card config-block">
+            <h3 class="config-h"><i class="icon-cloud"></i> 06. DHCP & DNS Services</h3>
+            <div class="tech-desc">
+                إعداد السيرفر المركزي لتقديم خدمات الـ <b>IP Discovery</b> والترجمة البرمجية لأسماء النطاقات المحلية.
+            </div>
+            <div class="code-window">
+                ip dhcp excluded-address 192.168.30.1 192.168.30.10<br>
+                ip dhcp pool ADMIN_POOL<br>
+                network 192.168.30.0 255.255.255.0
+            </div>
+        </div>
+    </div>
+`,
+        services: `
+    <div class="page-header">
+        <h2 class="page-main-title">Network Services Verification</h2>
+        <p class="page-subtitle">إثبات كفاءة الخدمات وتكامل الأنظمة البرمجية</p>
+    </div>
+
+    <div class="services-container">
+        <div class="glass-card service-main-card">
+            <div class="service-content">
+                <h3 class="service-h"><i class="icon-browser"></i> Secure Web Access (HTTPS)</h3>
+                <p class="service-p">تحقق من وصول أجهزة التذاكر (VLAN 10) إلى بوابة الحجز المشفرة بعد ضبط قواعد الـ ACL.</p>
+                <div class="tech-tags"><span>Protocol: HTTPS</span><span>Port: 443</span></div>
+            </div>
+            <div class="image-wrapper">
+                <img src="webBookingTicket.png" alt="Web Booking Interface" class="dashboard-img">
+                <div class="img-caption">شاشة المتصفح: الوصول الناجح عبر المنفذ الآمن</div>
+            </div>
+        </div>
+
+        <div class="email-vertical-grid">
+            <div class="glass-card service-sub-card">
+                <h4><i class="icon-server"></i> Mail Server Configuration</h4>
+                <img src="settinginserver.png" alt="Server Settings" class="sub-img">
+                <p class="img-note">إعدادات SMTP/POP3 ونطاق themepark.com</p>
+            </div>
+
+            <div class="glass-card service-sub-card">
+                <h4><i class="icon-user-cog"></i> Client Mail Setup</h4>
+                <img src="configureMail.png" alt="Client Configuration" class="sub-img">
+                <p class="img-note">ضبط حساب PC_MAINT_1 للربط مع السيرفر</p>
+            </div>
+
+            <div class="glass-card service-sub-card full-row">
+                <h4><i class="icon-exchange"></i> Successful Communication Test</h4>
+                <div class="dual-proof">
+                    <img src="sendandreceive.png" alt="Send and Receive Proof" class="final-proof-img">
+                    <div class="proof-desc">
+                        <h5>الحالة: مكتمل بنجاح</h5>
+                        <p>تبادل البيانات بين Office-1 و PC_MAINT_1 يثبت فاعلية الـ Routing Redistribution.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+`,
+        testing: `
+    <div class="page-header">
+        <h2 class="page-main-title">Network Validation & Security Report</h2>
+        <p class="page-subtitle">تقرير التحقق النهائي من كفاءة التوجيه وعزل البيانات</p>
+    </div>
+
+    <div class="test-sections">
+        <div class="glass-card test-card full-width">
+            <div class="card-badge">Security Layer</div>
+            <h3><i class="fas fa-shield-virus"></i> Access Control Lists (ACLs) Verification</h3>
+            <p>تم اختبار قواعد الوصول لضمان أن شبكة الألعاب لا يمكنها الوصول لبيانات الإدارة الحساسة.</p>
+            <div class="ping-results-grid">
+                <div class="result-item success">
+                    <span class="status-icon"><i class="fas fa-check-double"></i></span>
+                    <div class="result-info">
+                        <strong>Tickets to Web Server (HTTP/DNS)</strong>
+                        <p>Status: Success (Permitted by ACL 110)</p>
+                    </div>
+                </div>
+                <div class="result-item blocked">
+                    <span class="status-icon"><i class="fas fa-user-shield"></i></span>
+                    <div class="result-info">
+                        <strong>Tickets to Admin Network</strong>
+                        <p>Status: Blocked (Denied by ACL - Security Protocol)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="test-grid">
+            <div class="glass-card test-card">
+                <div class="card-badge">External Routing</div>
+                <h3><i class="fas fa-globe"></i> RouterISP: RIP Summary</h3>
+                <div class="command-output">
+                    <pre>
+RouterISP# show ip route rip
+R    192.168.10.0/24 [120/1] via 10.0.0.20
+R    192.168.30.0/24 [120/1] via 20.0.0.20
+--- Connectivity to Internal LANs: OK ---
+                    </pre>
+                </div>
+            </div>
+
+            <div class="glass-card test-card">
+                <div class="card-badge">Remote Access</div>
+                <h3><i class="fas fa-key"></i> SSH Admin Access</h3>
+                <div class="command-output">
+                    <pre>
+Admin-PC> ssh -l admin 192.168.30.1
+Password: *****
+RouterAdmin# show users
+Line       User       Host(s)
+* 0 vty 0  admin      idle     00:00:00 
+--- SSH v2 Encryption Active ---
+                    </pre>
+                </div>
+            </div>
+
+            <div class="glass-card test-card">
+                <div class="card-badge">Routing</div>
+                <h3><i class="fas fa-project-diagram"></i> MAINT_A: RIP & Static</h3>
+                <div class="command-output">
+                    <pre>
+R_MAINT_A# show ip route
+Gateway of last resort is 30.0.0.2 to network 0.0.0.0
+R    10.0.0.0/8 [120/1] via 30.0.0.2
+S    172.16.20.0/24 [1/0] via 172.16.100.1
+C    172.16.10.0/24 is directly connected
+                    </pre>
+                </div>
+            </div>
+
+            <div class="glass-card test-card">
+                <div class="card-badge">Switching</div>
+                <h3><i class="fas fa-lock"></i> Layer 2 Port-Security</h3>
+                <div class="command-output">
+                    <pre>
+SwitchAdmin# show port-security interface fa0/5
+Port Security              : Enabled
+Port Status                : Secure-up
+Violation Mode             : Shutdown
+Last Source Addr:Vlan      : 0060.2F3A.E101:3
+                    </pre>
+                </div>
+            </div>
+            
+            <div class="glass-card test-card full-width">
+                <div class="card-badge">VLAN Database</div>
+                <h3><i class="fas fa-sitemap"></i> SW_MAINT_B: VLAN Assignment</h3>
+                <div class="command-output">
+                    <pre>
+SW_MAINT_B# show vlan brief
+VLAN  Name                             Status    Ports
+----  -------------------------------- --------- -------------------------------
+1     default                          active    Fa0/1, Fa0/2
+10    Tickets                          active    Fa0/3, Fa0/4
+20    Games                            active    Fa0/5, Fa0/6
+30    Maintenance                      active    Fa0/7, Fa0/8
+                    </pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="glass-card test-card full-width">
+            <div class="card-badge">Connectivity Logs</div>
+            <h3><i class="fas fa-terminal"></i> Live Ping Logs (Feb 2026)</h3>
+            <div class="command-output terminal-logs">
+                <pre>
+Pinging 172.16.20.10 with 32 bytes of data:
+Reply from 172.16.20.10: bytes=32 time<1ms TTL=126
+Ping statistics: Sent = 4, Received = 4, Lost = 0 (0% loss)
+--- Success Rate: 100% ---
+                </pre>
+            </div>
+        </div>
+    </div>
+`,
+        conclusion: `
+    <div class="page-header" style="text-align: center; margin-bottom: 50px;">
+        <h2 class="page-main-title" style="font-size: 2.5rem; letter-spacing: 2px;">PROJECT TERMINATION REPORT</h2>
+        <div style="width: 100px; height: 4px; background: var(--neon-blue); margin: 10px auto;"></div>
+    </div>
+
+    <div class="conclusion-layout" style="display: grid; grid-template-columns: 1fr 350px; gap: 30px;">
+        
+        <div class="main-column">
+            <div class="glass-card main-conclusion" style="position: relative; overflow: hidden;">
+                <div style="position: absolute; top: -20px; right: -20px; font-size: 100px; opacity: 0.05; color: var(--neon-blue); transform: rotate(-15deg);">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3><i class="fas fa-flag-checkered" style="color: var(--neon-blue);"></i> الملخص التنفيذي للمشروع</h3>
+                <p style="line-height: 1.8; font-size: 1.1rem; color: #ccc;">
+                    تم بحمد الله بناء بيئة شبكية هجينة (Hybrid Network) تدمج بين كفاءة التوجيه الديناميكي وقوة الأنظمة الأمنية المحيطية. 
+                    هذا المشروع ليس مجرد ربط أجهزة، بل هو تصميم لسياسة أمان متكاملة تحمي أصول **Dreamland** الرقمية.
+                </p>
+
+                <div class="achievement-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 30px;">
+                    <div class="achieve-item" style="background: rgba(255,255,255,0.03); padding: 20px; border-radius: 10px; border-left: 3px solid var(--neon-blue);">
+                        <h4 style="color: var(--neon-blue); margin-bottom: 10px;">Security</h4>
+                        <p style="font-size: 0.9rem;">تطبيق معايير الـ NIST عبر عزل الـ VLANs وتصفية الحزم بـ Extended ACLs.</p>
+                    </div>
+                    <div class="achieve-item" style="background: rgba(255,255,255,0.03); padding: 20px; border-radius: 10px; border-left: 3px solid var(--neon-pink);">
+                        <h4 style="color: var(--neon-pink); margin-bottom: 10px;">Scalability</h4>
+                        <p style="font-size: 0.9rem;">هيكلية مرنة تسمح بإضافة أكثر من 200 جهاز مستقبلاً دون الحاجة لإعادة التصميم.</p>
+                    </div>
+                    <div class="achieve-item" style="background: rgba(255,255,255,0.03); padding: 20px; border-radius: 10px; border-left: 3px solid #0f0;">
+                        <h4 style="color: #0f0; margin-bottom: 10px;">Integrity</h4>
+                        <p style="font-size: 0.9rem;">ضمان سلامة البيانات المنقولة عبر بروتوكولات إدارة مشفرة (SSH/HTTPS).</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="final-quote" style="margin-top: 30px; padding: 25px; border-right: 4px solid var(--neon-blue); background: var(--glass); font-style: italic; font-size: 1.2rem; color: #eee;">
+                "الإبداع في الهندسة لا يكمن في تعقيد الحلول، بل في جعل الأنظمة المعقدة تعمل ببساطة وأمان."
+            </div>
+        </div>
+
+        <div class="side-column">
+            <div class="glass-card status-box" style="border: 1px solid rgba(0,255,0,0.2);">
+                <div class="status-header" style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px;">
+                    <div class="pulse-green"></div>
+                    <h4 style="margin: 0; color: #0f0;">System Operational</h4>
+                </div>
+                <ul class="status-list" style="list-style: none; padding: 0; line-height: 2.5;">
+                    <li><i class="fas fa-check" style="color:#0f0"></i> RIPv2 Convergence: <b>100%</b></li>
+                    <li><i class="fas fa-check" style="color:#0f0"></i> VLAN Isolation: <b>Verified</b></li>
+                    <li><i class="fas fa-check" style="color:#0f0"></i> Port-Security: <b>Active</b></li>
+                    <li><i class="fas fa-check" style="color:#0f0"></i> ACL Strict Mode: <b>Enabled</b></li>
+                </ul>
+            </div>
+
+            <div class="glass-card" style="margin-top: 20px; text-align: center; padding: 20px;">
+                <h4 style="color: var(--neon-pink); margin-bottom: 15px;">فريق العمل</h4>
+                <div style="font-weight: bold; font-size: 1.1rem;">العصماء حلاق</div>
+                <div style="font-weight: bold; font-size: 1.1rem; margin-top: 5px;">إيلاف الحليلي</div>
+                <div style="font-size: 0.8rem; color: #888; margin-top: 15px;">تحت إشراف المهندس /أنور.</div>
+            </div>
+        </div>
+    </div>
+
+`,
+      };
+
+      function loadContent(page) {
+        const contentDisplay = document.getElementById("content-display");
+        const navItems = document.querySelectorAll(".nav-item");
+        const contentArea = document.getElementById("content-area");
+
+        // Remove active class from all nav items
+        navItems.forEach((item) => item.classList.remove("active"));
+
+        // Add active class to the clicked nav item
+        document
+          .querySelector(`.nav-item[onclick="loadContent('${page}')"]`)
+          .classList.add("active");
+
+        // Update content
+        contentDisplay.innerHTML = content[page];
+
+        // Adjust content-area alignment based on page
+        if (page === "home") {
+          contentArea.classList.add("home-active");
+        } else {
+          contentArea.classList.remove("home-active");
+        }
+
+        // If a chart needs to be rendered, call the function
+        if (page === "overview") {
+          // Assuming you have a function to render your chart
+          renderMainChart();
+        }
+      }
+
+      // Load home page on initial load
+      window.onload = () => loadContent("home");
+
+      // Placeholder for chart rendering (make sure this is defined elsewhere if needed)
+      function renderMainChart() {
+        const ctx = document.getElementById("trafficChart").getContext("2d");
+
+        // تعريف الألوان لتناسب الهوية الجديدة (ذهبي، خزامي، فضي)
+        const colorGold = "#d4af37";
+        const colorLavender = "#967bb6";
+        const colorSilver = "#778da9";
+
+        new Chart(ctx, {
+          type: "doughnut",
+          data: {
+            labels: ["منطقة الألعاب", "مبنى الإدارة", "قسم الصيانة"],
+            datasets: [
+              {
+                data: [55, 30, 15], // النسب "الواقعية" بناءً على توزيع أجهزتك
+                backgroundColor: [colorLavender, colorGold, colorSilver],
+                hoverOffset: 15,
+                borderWidth: 0, // إزالة الحدود لجعل الشكل أكثر سلاسة
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: "70%", // يجعل الحلقة نحيفة وأنيقة
+            plugins: {
+              legend: {
+                position: "bottom",
+                labels: {
+                  color: "#f0f0f0",
+                  font: { family: "Cairo", size: 14 },
+                  padding: 20,
+                },
+              },
+            },
+          },
+        });
+      }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </body>
+</html>
