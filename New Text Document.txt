@@ -103,6 +103,23 @@ RouterAdmin(config)#line vty 0 15
 RouterAdmin(config-line)#access-class 10 in
 RouterAdmin(config-line)#transport input ssh
 RouterAdmin(config-line)#exit
+RouterAdmin(config)#no access-list 100
+RouterAdmin(config)#access-list 100 permit ip 192.168.30.0 0.0.0.255 any
+RouterAdmin(config)#access-list 100 permit ip any 192.168.30.0 0.0.0.255
+RouterAdmin(config)#inter f0/1
+RouterAdmin(config-if)#ip acces
+RouterAdmin(config-if)#ip access-group 100 in
+RouterAdmin(config-if)#exit
+RouterAdmin(config)#no access-list 10
+RouterAdmin(config)#no access-list 100
+RouterAdmin(config)#access-list 10 permit 192.168.30.0 0.0.0.255
+RouterAdmin(config)#line vty 0 15
+RouterAdmin(config-line)#access-class 10 in
+RouterAdmin(config-line)#exit
+RouterAdmin(config)#access-list 100 permit ip any any
+RouterAdmin(config)#interface FastEthernet0/1
+RouterAdmin(config-if)#ip access-group 100 in
+RouterAdmin(config-if)#exitno ip access-list extended MAINTENANCE
 RouterAdmin(config)#exit
 RouterAdmin#copy running-config startup-config 
 
@@ -144,6 +161,31 @@ RouterGames(config-ext-nacl)#permit ip 192.168.20.0 0.0.0.255 172.16.0.0 0.0.255
 RouterGames(config-ext-nacl)#permit ip 192.168.20.0 0.0.0.255 192.168.10.0 0.0.0.255
 RouterGames(config-ext-nacl)#deny ip 192.168.20.0 0.0.0.255 192.168.30.0 0.0.0.255
 RouterGames(config-ext-nacl)#permit ip any any
+RouterGames(config-ext-nacl)#exit
+RouterGames(config)#ip access-list extended tickets
+RouterGames(config-ext-nacl)#permit tcp 192.168.10.0 0.0.0.255 host 192.168.30.10 eq www 
+RouterGames(config-ext-nacl)#deny ip 192.168.10.0 0.0.0.255 192.168.30.0 0.0.0.255
+RouterGames(config-ext-nacl)#permit ip any any 
+RouterGames(config-ext-nacl)#exit
+RouterGames(config)#ip access-list extended tickets
+RouterGames(config)#no ip access-list extended CONTROL
+RouterGames(config)#no ip access-list extended tickets
+RouterGames(config)#ip access-list extended tickets
+RouterGames(config-ext-nacl)#permit ip 192.168.10.0 0.0.0.255 192.168.30.0 0.0.0.255
+RouterGames(config-ext-nacl)#deny ip 192.168.10.0 0.0.0.255 any
+RouterGames(config-ext-nacl)#permit ip any any
+RouterGames(config-ext-nacl)#exit
+RouterGames(config)#ip access-list extended CONTROL
+RouterGames(config-ext-nacl)#permit ip 192.168.20.0 0.0.0.255 192.168.30.0 0.0.0.255
+RouterGames(config-ext-nacl)#permit ip 192.168.20.0 0.0.0.255 172.16.0.0 0.0.255.255
+RouterGames(config-ext-nacl)#deny ip 192.168.20.0 0.0.0.255 any
+RouterGames(config-ext-nacl)#permit ip any any
+RouterGames(config-ext-nacl)#exit
+RouterGames(config)#interface FastEthernet0/1.10
+RouterGames(config-subif)#ip access-group tickets in
+RouterGames(config-subif)#interface FastEthernet0/1.20
+RouterGames(config-subif)#ip access-group CONTROL in
+RouterGames(config-subif)#exit
 RouterGames(config-ext-nacl)#exit
 RouterGames(config)#interface f0/1.10
 RouterGames(config-subif)#ip access-group tickets in
@@ -322,6 +364,38 @@ R_MAINT_A(config)#interface gig0/2
 R_MAINT_A(config-if)#ip add 30.0.0.1 255.255.255.252
 R_MAINT_A(config-if)#no shut
 R_MAINT_A(config-if)#exit
+R_MAINT_A(config)#ip access-list extended MAINTENANCE
+R_MAINT_A(config-ext-nacl)#permit ip 172.16.0.0 0.0.255.255 host 192.168.30.0 
+R_MAINT_A(config-ext-nacl)#permit ip 172.16.0.0 0.0.255.255 192.168.20.0 0.0.0.255
+R_MAINT_A(config-ext-nacl)#deny ip 172.16.0.0 0.0.255.255 192.168.30.0 0.0.0.255
+R_MAINT_A(config-ext-nacl)# deny ip any any
+R_MAINT_A(config-ext-nacl)#ip access-list extended MAINTENANCE
+R_MAINT_A(config-ext-nacl)#permit ip 172.16.0.0 0.0.255.255 host 192.168.30.0 
+R_MAINT_A(config-ext-nacl)#permit ip 172.16.0.0 0.0.255.255 172.16.20.0 0.0.0.255
+R_MAINT_A(config-ext-nacl)#deny ip any any
+R_MAINT_A(config-ext-nacl)#exit
+R_MAINT_A(config)#interface gig0/1
+R_MAINT_A(config-if)#ip access-group MAINTENANCE in
+R_MAINT_A(config-if)#exit
+R_MAINT_A(config)#ip access-list extended MAINTENANCE
+R_MAINT_A(config-ext-nacl)#permit ip 172.16.0.0 0.0.255.255 192.168.30.0 0.0.0.255
+R_MAINT_A(config-ext-nacl)#permit ip 172.16.0.0 0.0.255.255 192.168.20.0 0.0.0.255
+R_MAINT_A(config-ext-nacl)#deny ip 172.16.0.0 0.0.255.255 192.168.10.0 0.0.0.255
+R_MAINT_A(config-ext-nacl)#deny ip any any
+R_MAINT_A(config-ext-nacl)#ip access-list extended MAINTENANCE
+R_MAINT_A(config-ext-nacl)#permit ip 172.16.0.0 0.0.255.255 host 192.168.30.0 
+R_MAINT_A(config-ext-nacl)#permit ip 172.16.0.0 0.0.255.255 172.16.20.0 0.0.0.255
+R_MAINT_A(config-ext-nacl)#deny ip any any
+R_MAINT_A(config-ext-nacl)#ip access-list extended MAINTENANCE
+R_MAINT_A(config-ext-nacl)#no deny ip 172.16.0.0 0.0.255.255 192.168.30.0 0.0.0.255
+R_MAINT_A(config-ext-nacl)#no deny ip 172.16.0.0 0.0.255.255 172.16.20.0 0.0.0.255
+R_MAINT_A(config-ext-nacl)#deny ip any any
+R_MAINT_A(config-ext-nacl)#
+R_MAINT_A(config-ext-nacl)#ip access-list extended MAINTENANCE
+R_MAINT_A(config-ext-nacl)#1 permit ip 192.168.30.0 0.0.0.255
+% Incomplete command.
+R_MAINT_A(config-ext-nacl)#1 permit ip 192.168.30.0 0.0.0.255 any
+R_MAINT_A(config-ext-nacl)#exit
 R_MAINT_A(config)#exit
 R_MAINT_A#copy running-config startup-config 
 
@@ -356,6 +430,15 @@ R_MAINT_B(config-if)#no shutdown
 R_MAINT_B(config-if)#exit
 R_MAINT_B(config)#ip route 172.16.10.0 255.255.255.0 172.16.100.2
 R_MAINT_B(config)#ip route 0.0.0.0 0.0.0.0 172.16.100.2
+R_MAINT_B(config)#ip access-list extended MAINT_B
+R_MAINT_B(config-ext-nacl)#permit ip 172.16.20.0 0.0.0.255 192.168.30.0 0.0.0.255
+R_MAINT_B(config-ext-nacl)#deny ip 172.16.20.0 0.0.0.255 any
+R_MAINT_B(config-ext-nacl)#permit ip any any
+R_MAINT_B(config-ext-nacl)#exit
+R_MAINT_B(config)#interface f0/1
+R_MAINT_B(config-if)#ip access-group MAINT_B in
+R_MAINT_B(config-if)#exit
+R_MAINT_B(config)#exit
 R_MAINT_B(config)#exit
 R_MAINT_B#copy running-config startup-config 
 
@@ -387,14 +470,6 @@ SW_MAINT_A(config)#interface range fastEthernet 0/2-3
 SW_MAINT_A(config-if-range)#switchport mode access
 SW_MAINT_A(config-if-range)#spanning-tree portfast 
 SW_MAINT_A(config-if-range)#exit
-R_MAINT_A(config)#ip access-list extended MAINTENANCE
-R_MAINT_A(config-ext-nacl)#permit ip 172.16.0.0 0.0.255.255 192.168.20.0 0.0.0.255
-R_MAINT_A(config-ext-nacl)#deny ip 172.16.0.0 0.0.255.255 192.168.30.0 0.0.0.255
-R_MAINT_A(config-ext-nacl)# deny ip any any
-R_MAINT_A(config-ext-nacl)#exit
-R_MAINT_A(config)#interface gig0/1
-R_MAINT_A(config-if)#ip access-group MAINTENANCE in
-R_MAINT_A(config-if)#exit
 SW_MAINT_A(config)#exit
 SW_MAINT_A#copy running-config startup-config 
 
@@ -822,3 +897,328 @@ Ping statistics for 192.168.10.11:
     Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
 Approximate round trip times in milli-seconds:
     Minimum = 0ms, Maximum = 0ms, Average = 0ms
+
+
+----------------------------------------------------------------------------------------------------------------------------
+                    after   ACL 
+-----------------------------------------------------------------------------------------------------------------------------
+                    Office Building full control
+===========================================================
+				Ping between Office Building and Games Area vlan 20:
+Cisco Packet Tracer PC Command Line 1.0
+C:\>ping 192.168.20.10
+
+Pinging 192.168.20.10 with 32 bytes of data:
+
+Reply from 192.168.20.10: bytes=32 time<1ms TTL=125
+Reply from 192.168.20.10: bytes=32 time<1ms TTL=125
+Reply from 192.168.20.10: bytes=32 time=17ms TTL=125
+Reply from 192.168.20.10: bytes=32 time<1ms TTL=125
+
+Ping statistics for 192.168.20.10:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 0ms, Maximum = 17ms, Average = 4ms
+
+===========================================================
+				Ping between Office Building and Games Area vlan 10:
+C:\>ping 192.168.10.11
+
+Pinging 192.168.10.11 with 32 bytes of data:
+
+Reply from 192.168.10.11: bytes=32 time<1ms TTL=125
+Reply from 192.168.10.11: bytes=32 time<1ms TTL=125
+Reply from 192.168.10.11: bytes=32 time<1ms TTL=125
+Reply from 192.168.10.11: bytes=32 time<1ms TTL=125
+
+Ping statistics for 192.168.10.11:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 0ms, Maximum = 0ms, Average = 0ms
+===========================================================
+				Ping between Office Building and R_MAINT_B :
+C:\>ping 172.16.20.11
+
+Pinging 172.16.20.11 with 32 bytes of data:
+
+Reply from 172.16.20.11: bytes=32 time<1ms TTL=124
+Reply from 172.16.20.11: bytes=32 time<1ms TTL=124
+Reply from 172.16.20.11: bytes=32 time<1ms TTL=124
+Reply from 172.16.20.11: bytes=32 time<1ms TTL=124
+
+Ping statistics for 172.16.20.11:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 0ms, Maximum = 0ms, Average = 0ms
+===========================================================
+				Ping between Office Building and R_MAINT_A:
+C:\>ping 172.16.10.11
+
+Pinging 172.16.10.11 with 32 bytes of data:
+
+Reply from 172.16.10.11: bytes=32 time<1ms TTL=125
+Reply from 172.16.10.11: bytes=32 time<1ms TTL=125
+Reply from 172.16.10.11: bytes=32 time<1ms TTL=125
+Reply from 172.16.10.11: bytes=32 time<1ms TTL=125
+
+Ping statistics for 172.16.10.11:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 0ms, Maximum = 0ms, Average = 0ms
+
+    -----------------------------------------------------------------------------------------------------------------------------
+                    Games Area can access onle to the Office Building 
+===========================================================
+               Ping between vlan 10 and Office Building:
+Cisco Packet Tracer PC Command Line 1.0
+C:\>ping 192.168.30.21
+
+Pinging 192.168.30.21 with 32 bytes of data:
+
+Request timed out.
+Reply from 192.168.30.21: bytes=32 time=1ms TTL=125
+Reply from 192.168.30.21: bytes=32 time=1ms TTL=125
+Reply from 192.168.30.21: bytes=32 time<1ms TTL=125
+
+Ping statistics for 192.168.30.21:
+    Packets: Sent = 4, Received = 3, Lost = 1 (25% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 0ms, Maximum = 1ms, Average = 0ms
+
+===========================================================
+               Ping between vlan 10 and Office Building:
+C:\>ping 192.168.30.10
+
+Pinging 192.168.30.10 with 32 bytes of data:
+
+Reply from 192.168.30.10: bytes=32 time<1ms TTL=125
+Reply from 192.168.30.10: bytes=32 time<1ms TTL=125
+Reply from 192.168.30.10: bytes=32 time<1ms TTL=125
+Reply from 192.168.30.10: bytes=32 time<1ms TTL=125
+
+Ping statistics for 192.168.30.10:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 0ms, Maximum = 0ms, Average = 0ms
+
+
+
+===========================================================
+               Ping between vlan 10 and vlan 20:
+C:\>ping 192.168.20.10
+
+Pinging 192.168.20.10 with 32 bytes of data:
+
+Reply from 192.168.10.1: Destination host unreachable.
+Reply from 192.168.10.1: Destination host unreachable.
+Reply from 192.168.10.1: Destination host unreachable.
+Reply from 192.168.10.1: Destination host unreachable.
+
+Ping statistics for 192.168.20.10:
+    Packets: Sent = 4, Received = 0, Lost = 4 (100% loss),
+
+===========================================================
+               Ping between vlan 10 and R_MAINT_B:
+C:\>ping 172.16.20.10
+
+Pinging 172.16.20.10 with 32 bytes of data:
+
+Reply from 192.168.10.1: Destination host unreachable.
+Reply from 192.168.10.1: Destination host unreachable.
+Reply from 192.168.10.1: Destination host unreachable.
+Reply from 192.168.10.1: Destination host unreachable.
+
+Ping statistics for 172.16.20.10:
+    Packets: Sent = 4, Received = 0, Lost = 4 (100% loss),
+
+
+===========================================================
+               Ping between vlan 10 and R_MAINT_A:
+C:\>ping 172.16.10.10
+
+Pinging 172.16.10.10 with 32 bytes of data:
+
+Reply from 192.168.10.1: Destination host unreachable.
+Reply from 192.168.10.1: Destination host unreachable.
+Reply from 192.168.10.1: Destination host unreachable.
+Reply from 192.168.10.1: Destination host unreachable.
+
+Ping statistics for 172.16.10.10:
+    Packets: Sent = 4, Received = 0, Lost = 4 (100% loss),
+-----------------------------------------------------------------------------------------------------------
+                                VLAN 20 con access to Office Building and R_MAINT_A
+===========================================================
+               Ping between vlan 20 and Office Building:
+
+Cisco Packet Tracer PC Command Line 1.0
+C:\>ping 192.168.30.10
+
+Pinging 192.168.30.10 with 32 bytes of data:
+
+Reply from 192.168.30.10: bytes=32 time<1ms TTL=125
+Reply from 192.168.30.10: bytes=32 time<1ms TTL=125
+Reply from 192.168.30.10: bytes=32 time=1ms TTL=125
+Reply from 192.168.30.10: bytes=32 time=19ms TTL=125
+
+Ping statistics for 192.168.30.10:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 0ms, Maximum = 19ms, Average = 5ms
+
+===========================================================
+               Ping between vlan 20 and vlan 10:
+
+C:\>ping 192.168.10.12
+
+Pinging 192.168.10.12 with 32 bytes of data:
+
+Reply from 192.168.20.1: Destination host unreachable.
+Reply from 192.168.20.1: Destination host unreachable.
+Reply from 192.168.20.1: Destination host unreachable.
+Reply from 192.168.20.1: Destination host unreachable.
+
+Ping statistics for 192.168.10.12:
+    Packets: Sent = 4, Received = 0, Lost = 4 (100% loss),
+
+===========================================================
+               Ping between vlan 20 and R_MAINT_A:
+C:\>ping 172.16.10.10
+
+Pinging 172.16.10.10 with 32 bytes of data:
+
+Reply from 172.16.10.10: bytes=32 time=23ms TTL=125
+Reply from 172.16.10.10: bytes=32 time<1ms TTL=125
+Reply from 172.16.10.10: bytes=32 time=18ms TTL=125
+Reply from 172.16.10.10: bytes=32 time<1ms TTL=125
+
+Ping statistics for 172.16.10.10:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 0ms, Maximum = 23ms, Average = 10ms
+
+===========================================================
+               Ping between vlan 20 and R_MAINT_B:
+
+C:\>ping 172.16.20.10
+
+Pinging 172.16.20.10 with 32 bytes of data:
+
+Request timed out.
+Request timed out.
+Request timed out.
+Request timed out.
+
+Ping statistics for 172.16.20.10:
+    Packets: Sent = 4, Received = 0, Lost = 4 (100% loss),
+-----------------------------------------------------------------------------------------------------------
+                                R_MAINT_A con access to Office Building and control office(vlan 20)
+===========================================================
+               Ping between R_MAINT_A and Office Building:
+               
+Cisco Packet Tracer PC Command Line 1.0
+C:\>ping 192.168.30.10
+
+Pinging 192.168.30.10 with 32 bytes of data:
+
+Reply from 192.168.30.10: bytes=32 time<1ms TTL=125
+Reply from 192.168.30.10: bytes=32 time<1ms TTL=125
+Reply from 192.168.30.10: bytes=32 time<1ms TTL=125
+Reply from 192.168.30.10: bytes=32 time=1ms TTL=125
+
+Ping statistics for 192.168.30.10:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 0ms, Maximum = 1ms, Average = 0ms
+
+===========================================================
+               Ping between R_MAINT_A and vlan20:
+
+C:\>ping 192.168.20.10
+
+Pinging 192.168.20.10 with 32 bytes of data:
+
+Reply from 192.168.20.10: bytes=32 time<1ms TTL=125
+Reply from 192.168.20.10: bytes=32 time<1ms TTL=125
+Reply from 192.168.20.10: bytes=32 time<1ms TTL=125
+Reply from 192.168.20.10: bytes=32 time<1ms TTL=125
+
+Ping statistics for 192.168.20.10:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 0ms, Maximum = 0ms, Average = 0ms
+
+===========================================================
+               Ping between R_MAINT_A and vlan 10:
+
+C:\>ping 192.168.10.22
+
+Pinging 192.168.10.22 with 32 bytes of data:
+
+Reply from 172.16.10.1: Destination host unreachable.
+Reply from 172.16.10.1: Destination host unreachable.
+Reply from 172.16.10.1: Destination host unreachable.
+Reply from 172.16.10.1: Destination host unreachable.
+
+Ping statistics for 192.168.10.22:
+    Packets: Sent = 4, Received = 0, Lost = 4 (100% loss),
+
+-----------------------------------------------------------------------------------------------------------
+                                R_MAINT_B con access to Office Building 
+===========================================================
+               Ping between R_MAINT_B and R_MAINT_A:
+C:\>ping 172.16.10.10
+
+Pinging 172.16.10.10 with 32 bytes of data:
+
+Reply from 172.16.20.1: Destination host unreachable.
+Reply from 172.16.20.1: Destination host unreachable.
+Reply from 172.16.20.1: Destination host unreachable.
+Reply from 172.16.20.1: Destination host unreachable.
+
+Ping statistics for 172.16.10.10:
+    Packets: Sent = 4, Received = 0, Lost = 4 (100% loss),
+
+===========================================================
+               Ping between R_MAINT_B and Building Office:
+C:\>ping 192.168.30.10
+
+Pinging 192.168.30.10 with 32 bytes of data:
+
+Reply from 192.168.30.10: bytes=32 time<1ms TTL=124
+Reply from 192.168.30.10: bytes=32 time<1ms TTL=124
+Reply from 192.168.30.10: bytes=32 time<1ms TTL=124
+Reply from 192.168.30.10: bytes=32 time<1ms TTL=124
+
+Ping statistics for 192.168.30.10:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 0ms, Maximum = 0ms, Average = 0ms
+
+===========================================================
+               Ping between R_MAINT_B and VLAN 20:
+C:\>ping 192.168.20.10
+
+Pinging 192.168.20.10 with 32 bytes of data:
+
+Reply from 172.16.20.1: Destination host unreachable.
+Reply from 172.16.20.1: Destination host unreachable.
+Reply from 172.16.20.1: Destination host unreachable.
+Reply from 172.16.20.1: Destination host unreachable.
+
+===========================================================
+               Ping between R_MAINT_B and VLAN 10:
+               
+Ping statistics for 192.168.20.10:
+    Packets: Sent = 4, Received = 0, Lost = 4 (100% loss),
+
+C:\>ping 192.168.10.21
+
+Pinging 192.168.10.21 with 32 bytes of data:
+
+Reply from 172.16.20.1: Destination host unreachable.
+Reply from 172.16.20.1: Destination host unreachable.
+Reply from 172.16.20.1: Destination host unreachable.
+Reply from 172.16.20.1: Destination host unreachable.
+
+Ping statistics for 192.168.10.21:
+    Packets: Sent = 4, Received = 0, Lost = 4 (100% loss),
